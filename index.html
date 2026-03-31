@@ -7,144 +7,73 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  /* ── Reset & Base ── */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --bg:       #0a0c15;
-    --bg2:      #12151f;
-    --bg3:      #1a1e2e;
-    --border:   #252840;
-    --gold:     #f0b429;
-    --gold2:    #ffd166;
-    --purple:   #7c6af7;
-    --purple2:  #a89af9;
-    --text:     #e2e8f0;
-    --muted:    #64748b;
-    --success:  #34d399;
-    --danger:   #f87171;
-    --radius:   14px;
+    --bg:     #0a0c15; --bg2: #12151f; --bg3: #1a1e2e;
+    --border: #252840; --gold: #f0b429; --gold2: #ffd166;
+    --purple: #7c6af7; --purple2: #a89af9;
+    --text:   #e2e8f0; --muted: #64748b;
+    --success:#34d399;  --danger: #f87171;
+    --gym:    #ff6b35;  --gym2:   #ff8c5a;
+    --radius: 14px;
   }
   html, body { height: 100%; background: var(--bg); color: var(--text); font-family: 'Outfit', sans-serif; font-size: 15px; line-height: 1.5; }
-  body { display: flex; flex-direction: column; max-width: 480px; margin: 0 auto; position: relative; overflow-x: hidden; }
+  body { display: flex; flex-direction: column; max-width: 480px; margin: 0 auto; overflow-x: hidden; }
 
-  /* ── Login Screen ── */
-  #login-screen {
-    display: flex; flex-direction: column; justify-content: center; align-items: center;
-    min-height: 100vh; padding: 2rem; gap: 2rem;
-  }
+  /* ── Login ── */
+  #login-screen { display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; padding: 2rem; gap: 2rem; }
   .login-logo { text-align: center; }
   .login-logo .title { font-family: 'Bebas Neue', sans-serif; font-size: 4rem; letter-spacing: 3px; color: var(--gold); line-height: 1; }
   .login-logo .sub { font-size: 0.85rem; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-top: 6px; }
   .login-logo .mascot { font-size: 5rem; display: block; margin-bottom: 0.5rem; }
   .login-card { width: 100%; background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; }
-  .login-card h2 { font-size: 1rem; font-weight: 500; color: var(--text); margin-bottom: 1.2rem; }
+  .login-card h2 { font-size: 1rem; font-weight: 500; margin-bottom: 1.2rem; }
   .field { margin-bottom: 1rem; }
   .field label { display: block; font-size: 0.8rem; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 1px; }
-  .field input, .field select {
-    width: 100%; padding: 0.75rem 1rem; background: var(--bg3);
-    border: 1px solid var(--border); border-radius: 10px; color: var(--text);
-    font-family: 'Outfit', sans-serif; font-size: 1rem; outline: none;
-    transition: border-color .2s;
-  }
-  .field input:focus, .field select:focus { border-color: var(--gold); }
-  .btn {
-    width: 100%; padding: 0.85rem; background: var(--gold);
-    color: #0a0c15; border: none; border-radius: 10px;
-    font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: 2px;
-    cursor: pointer; transition: opacity .15s, transform .1s;
-  }
-  .btn:hover { opacity: 0.9; }
-  .btn:active { transform: scale(0.98); }
-  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
-  .btn-secondary {
-    background: transparent; color: var(--gold); border: 1px solid var(--gold);
-  }
+  .field input { width: 100%; padding: 0.75rem 1rem; background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-family: 'Outfit', sans-serif; font-size: 1rem; outline: none; transition: border-color .2s; }
+  .field input:focus { border-color: var(--gold); }
+  .btn { width: 100%; padding: 0.85rem; background: var(--gold); color: #0a0c15; border: none; border-radius: 10px; font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: 2px; cursor: pointer; transition: opacity .15s, transform .1s; }
+  .btn:hover { opacity: 0.9; } .btn:active { transform: scale(0.98); } .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .feedback-msg { margin-top: 1rem; padding: 0.75rem 1rem; border-radius: 10px; font-size: 0.9rem; text-align: center; display: none; }
+  .feedback-msg.success { background: rgba(52,211,153,.1); border: 1px solid rgba(52,211,153,.3); color: var(--success); }
+  .feedback-msg.error   { background: rgba(248,113,113,.1); border: 1px solid rgba(248,113,113,.3); color: var(--danger); }
 
-  /* ── App Layout ── */
+  /* ── App ── */
   #app { display: none; flex-direction: column; min-height: 100vh; }
   #app.visible { display: flex; }
 
   /* ── Header ── */
-  .app-header {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 1rem 1.2rem 0.8rem;
-    border-bottom: 1px solid var(--border);
-    background: var(--bg);
-    position: sticky; top: 0; z-index: 10;
-  }
+  .app-header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.2rem 0.8rem; border-bottom: 1px solid var(--border); background: var(--bg); position: sticky; top: 0; z-index: 10; }
   .header-user { display: flex; align-items: center; gap: 10px; }
   .header-emoji { font-size: 1.6rem; }
   .header-name { font-weight: 600; font-size: 0.95rem; }
   .header-animal { font-size: 0.75rem; color: var(--gold); font-weight: 500; }
-  .header-streak {
-    display: flex; align-items: center; gap: 5px;
-    background: var(--bg3); border: 1px solid var(--border);
-    border-radius: 20px; padding: 4px 10px;
-    font-size: 0.8rem; color: var(--gold2);
-  }
+  .header-streak { display: flex; align-items: center; gap: 5px; background: var(--bg3); border: 1px solid var(--border); border-radius: 20px; padding: 4px 10px; font-size: 0.8rem; color: var(--gold2); }
 
-  /* ── Content ── */
+  /* ── Tabs ── */
   .tab-content { flex: 1; overflow-y: auto; padding: 1.2rem; padding-bottom: 80px; }
   .tab-content.hidden { display: none; }
-
-  /* ── Bottom Nav ── */
-  .bottom-nav {
-    position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
-    width: 100%; max-width: 480px;
-    display: flex; background: var(--bg2);
-    border-top: 1px solid var(--border); z-index: 10;
-  }
-  .nav-item {
-    flex: 1; display: flex; flex-direction: column; align-items: center;
-    padding: 0.7rem 0; gap: 3px; cursor: pointer;
-    color: var(--muted); font-size: 0.7rem; letter-spacing: 0.5px;
-    border: none; background: none; transition: color .15s;
-  }
+  .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; display: flex; background: var(--bg2); border-top: 1px solid var(--border); z-index: 10; }
+  .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 0.7rem 0; gap: 3px; cursor: pointer; color: var(--muted); font-size: 0.7rem; letter-spacing: 0.5px; border: none; background: none; transition: color .15s; }
   .nav-item.active { color: var(--gold); }
   .nav-icon { font-size: 1.3rem; }
 
-  /* ── Section title ── */
+  /* ── Misc ── */
   .section-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: 2px; color: var(--gold); margin-bottom: 1rem; }
   .section-sub { font-size: 0.8rem; color: var(--muted); margin-top: -0.7rem; margin-bottom: 1rem; }
 
-  /* ── Home/Register tab ── */
-  .register-card {
-    background: var(--bg2); border: 1px solid var(--border);
-    border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1rem;
-  }
+  /* ── Home ── */
+  .register-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1rem; }
   .register-card h3 { font-size: 0.85rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; }
   .number-input-row { display: flex; gap: 10px; align-items: center; margin-bottom: 1rem; }
-  .num-btn {
-    width: 44px; height: 44px; background: var(--bg3); border: 1px solid var(--border);
-    border-radius: 10px; color: var(--text); font-size: 1.4rem; cursor: pointer;
-    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-  }
+  .num-btn { width: 44px; height: 44px; background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 1.4rem; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .num-btn:active { background: var(--border); }
-  #questoes-input {
-    flex: 1; text-align: center; font-family: 'Bebas Neue', sans-serif;
-    font-size: 2.2rem; letter-spacing: 2px; padding: 0.5rem;
-    background: var(--bg3); border: 1px solid var(--border); border-radius: 10px;
-    color: var(--gold); outline: none;
-  }
+  #questoes-input { flex: 1; text-align: center; font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; letter-spacing: 2px; padding: 0.5rem; background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; color: var(--gold); outline: none; }
   #questoes-input:focus { border-color: var(--gold); }
   .quick-btns { display: flex; gap: 8px; margin-bottom: 1rem; flex-wrap: wrap; }
-  .quick-btn {
-    padding: 6px 14px; background: var(--bg3); border: 1px solid var(--border);
-    border-radius: 20px; color: var(--text); font-size: 0.85rem; cursor: pointer;
-  }
+  .quick-btn { padding: 6px 14px; background: var(--bg3); border: 1px solid var(--border); border-radius: 20px; color: var(--text); font-size: 0.85rem; cursor: pointer; }
   .quick-btn:hover { border-color: var(--gold); color: var(--gold); }
-  .feedback-msg {
-    margin-top: 1rem; padding: 0.75rem 1rem; border-radius: 10px;
-    font-size: 0.9rem; text-align: center; display: none;
-  }
-  .feedback-msg.success { background: rgba(52,211,153,.1); border: 1px solid rgba(52,211,153,.3); color: var(--success); }
-  .feedback-msg.error   { background: rgba(248,113,113,.1); border: 1px solid rgba(248,113,113,.3); color: var(--danger); }
-
-  /* ── Progress card ── */
-  .progress-card {
-    background: var(--bg2); border: 1px solid var(--border);
-    border-radius: var(--radius); padding: 1.2rem; margin-bottom: 1rem;
-  }
+  .progress-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.2rem; margin-bottom: 1rem; }
   .progress-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
   .progress-label { font-size: 0.8rem; color: var(--muted); }
   .progress-val { font-size: 0.8rem; color: var(--gold); }
@@ -152,21 +81,48 @@
   .progress-fill { height: 100%; background: linear-gradient(90deg, var(--purple), var(--gold)); border-radius: 99px; transition: width .5s ease; }
   .next-animal { font-size: 0.8rem; color: var(--muted); margin-top: 6px; text-align: right; }
 
-  /* ── Ranking list ── */
-  .rank-list { display: flex; flex-direction: column; gap: 8px; }
-  .rank-item {
-    display: flex; align-items: center; gap: 12px;
-    background: var(--bg2); border: 1px solid var(--border);
-    border-radius: var(--radius); padding: 0.9rem 1rem;
-    position: relative; overflow: hidden;
+  /* ── Líder do Ginásio ── */
+  .gym-card {
+    background: linear-gradient(135deg, #1a1420 0%, #1e1528 100%);
+    border: 1px solid var(--gym);
+    border-radius: var(--radius);
+    padding: 1.2rem 1.4rem;
+    margin-bottom: 1.2rem;
+    position: relative;
+    overflow: hidden;
   }
-  .rank-item.rank-1 { border-color: #f0b429; }
-  .rank-item.rank-2 { border-color: #94a3b8; }
-  .rank-item.rank-3 { border-color: #b87333; }
+  .gym-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--gym), var(--gold), var(--gym));
+  }
+  .gym-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255,107,53,.12); border: 1px solid rgba(255,107,53,.3);
+    color: var(--gym2); border-radius: 20px;
+    padding: 3px 10px; font-size: 0.72rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;
+  }
+  .gym-leader-row { display: flex; align-items: center; gap: 14px; }
+  .gym-leader-emoji { font-size: 3rem; line-height: 1; }
+  .gym-leader-info { flex: 1; }
+  .gym-leader-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: 1px; color: var(--text); line-height: 1.1; }
+  .gym-leader-animal { font-size: 0.8rem; color: var(--gym2); margin-top: 2px; }
+  .gym-leader-count { text-align: right; }
+  .gym-count-big { font-family: 'Bebas Neue', sans-serif; font-size: 2.4rem; color: var(--gym); line-height: 1; }
+  .gym-count-label { font-size: 0.7rem; color: var(--muted); margin-top: 2px; }
+  .gym-empty { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 0.5rem 0; }
+  .gym-loading { display: flex; justify-content: center; gap: 8px; align-items: center; color: var(--muted); font-size: 0.85rem; padding: 0.5rem 0; }
+
+  /* ── Rank list ── */
+  .rank-list { display: flex; flex-direction: column; gap: 8px; }
+  .rank-item { display: flex; align-items: center; gap: 12px; background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.9rem 1rem; }
+  .rank-item.rank-1 { border-color: #f0b429; } .rank-item.rank-2 { border-color: #94a3b8; } .rank-item.rank-3 { border-color: #b87333; }
+  .rank-item.rank-me { background: rgba(124,106,247,.06); border-color: var(--purple) !important; }
   .rank-pos { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; color: var(--muted); min-width: 28px; text-align: center; }
-  .rank-pos.p1 { color: var(--gold); }
-  .rank-pos.p2 { color: #94a3b8; }
-  .rank-pos.p3 { color: #b87333; }
+  .rank-pos.p1 { color: var(--gold); } .rank-pos.p2 { color: #94a3b8; } .rank-pos.p3 { color: #b87333; }
   .rank-emoji { font-size: 1.6rem; }
   .rank-info { flex: 1; }
   .rank-name { font-weight: 600; font-size: 0.95rem; }
@@ -174,32 +130,21 @@
   .rank-num { text-align: right; }
   .rank-big { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; color: var(--gold); line-height: 1; }
   .rank-unit { font-size: 0.7rem; color: var(--muted); }
-  .rank-streak { font-size: 0.75rem; color: var(--gold2); }
-  .rank-me { background: rgba(124,106,247,.06); border-color: var(--purple) !important; }
   .empty-state { text-align: center; color: var(--muted); padding: 3rem 1rem; font-size: 0.9rem; }
+  .loading { display: flex; justify-content: center; align-items: center; padding: 2rem; gap: 8px; color: var(--muted); font-size: 0.9rem; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .spinner { width: 16px; height: 16px; border: 2px solid var(--border); border-top-color: var(--gold); border-radius: 50%; animation: spin .7s linear infinite; }
 
-  /* ── Perfil tab ── */
-  .profile-header {
-    background: var(--bg2); border: 1px solid var(--border);
-    border-radius: var(--radius); padding: 1.5rem; text-align: center; margin-bottom: 1rem;
-  }
+  /* ── Perfil ── */
+  .profile-header { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; text-align: center; margin-bottom: 1rem; }
   .profile-emoji-big { font-size: 4.5rem; display: block; margin-bottom: 0.5rem; }
   .profile-name { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 2px; }
-  .profile-animal-tag {
-    display: inline-block; background: rgba(240,180,41,.1); border: 1px solid rgba(240,180,41,.3);
-    color: var(--gold); border-radius: 20px; padding: 3px 14px; font-size: 0.85rem; margin-top: 6px;
-  }
+  .profile-animal-tag { display: inline-block; background: rgba(240,180,41,.1); border: 1px solid rgba(240,180,41,.3); color: var(--gold); border-radius: 20px; padding: 3px 14px; font-size: 0.85rem; margin-top: 6px; }
   .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1rem; }
-  .stat-card {
-    background: var(--bg2); border: 1px solid var(--border);
-    border-radius: var(--radius); padding: 1rem; text-align: center;
-  }
+  .stat-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; text-align: center; }
   .stat-big { font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; color: var(--gold); line-height: 1; }
   .stat-label { font-size: 0.75rem; color: var(--muted); margin-top: 4px; }
-  .evolution-card {
-    background: var(--bg2); border: 1px solid var(--border);
-    border-radius: var(--radius); padding: 1.2rem; margin-bottom: 1rem;
-  }
+  .evolution-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.2rem; margin-bottom: 1rem; }
   .evolution-card h3 { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; }
   .evo-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
   .evo-emoji { font-size: 1.2rem; min-width: 28px; text-align: center; }
@@ -207,28 +152,15 @@
   .evo-req { font-size: 0.75rem; color: var(--muted); }
   .evo-check { font-size: 0.85rem; color: var(--success); }
   .evo-row.current .evo-name { color: var(--gold); font-weight: 600; }
-  .logout-btn {
-    width: 100%; padding: 0.75rem; background: transparent;
-    border: 1px solid var(--border); border-radius: 10px;
-    color: var(--muted); font-family: 'Outfit', sans-serif; font-size: 0.9rem;
-    cursor: pointer; margin-top: 0.5rem;
-  }
+  .logout-btn { width: 100%; padding: 0.75rem; background: transparent; border: 1px solid var(--border); border-radius: 10px; color: var(--muted); font-family: 'Outfit', sans-serif; font-size: 0.9rem; cursor: pointer; margin-top: 0.5rem; }
   .logout-btn:hover { color: var(--danger); border-color: var(--danger); }
 
-  /* ── Loading ── */
-  .loading { display: flex; justify-content: center; align-items: center; padding: 2rem; gap: 8px; color: var(--muted); font-size: 0.9rem; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .spinner { width: 16px; height: 16px; border: 2px solid var(--border); border-top-color: var(--gold); border-radius: 50%; animation: spin .7s linear infinite; }
-
-  /* ── Scrollbar ── */
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: var(--bg); }
-  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+  ::-webkit-scrollbar { width: 4px; } ::-webkit-scrollbar-track { background: var(--bg); } ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
 </style>
 </head>
 <body>
 
-<!-- ═══════════════ LOGIN SCREEN ═══════════════ -->
+<!-- LOGIN -->
 <div id="login-screen">
   <div class="login-logo">
     <span class="mascot">🪱</span>
@@ -242,14 +174,13 @@
       <input type="text" id="login-name" placeholder="Ex: Marcelo" autocomplete="off" maxlength="30">
     </div>
     <button class="btn" id="login-btn" onclick="fazerLogin()">Entrar</button>
-    <div id="login-error" class="feedback-msg error" style="display:none"></div>
+    <div id="login-error" class="feedback-msg error"></div>
   </div>
 </div>
 
-<!-- ═══════════════ APP ═══════════════ -->
+<!-- APP -->
 <div id="app">
 
-  <!-- Header -->
   <div class="app-header">
     <div class="header-user">
       <span class="header-emoji" id="h-emoji">🪱</span>
@@ -258,16 +189,13 @@
         <div class="header-animal" id="h-animal">Minhoca</div>
       </div>
     </div>
-    <div class="header-streak" id="h-streak">
-      🔥 <span id="h-streak-num">0</span> dias
-    </div>
+    <div class="header-streak">🔥 <span id="h-streak-num">0</span> dias</div>
   </div>
 
-  <!-- ── Tab: Home ── -->
+  <!-- Tab Registrar -->
   <div class="tab-content" id="tab-home">
     <div class="section-title">Registrar</div>
-
-    <div class="progress-card" id="prog-card">
+    <div class="progress-card">
       <div class="progress-row">
         <span class="progress-label">Progresso para próxima evolução</span>
         <span class="progress-val" id="prog-text">0 / 120</span>
@@ -275,7 +203,6 @@
       <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
       <div class="next-animal" id="next-animal-text">Próximo: Lagarta 🐛</div>
     </div>
-
     <div class="register-card">
       <h3>Questões de hoje</h3>
       <div class="number-input-row">
@@ -284,103 +211,85 @@
         <button class="num-btn" onclick="ajustarQuestoes(1)">+</button>
       </div>
       <div class="quick-btns">
-        <button class="quick-btn" onclick="setQuestoes(5)">5</button>
-        <button class="quick-btn" onclick="setQuestoes(10)">10</button>
-        <button class="quick-btn" onclick="setQuestoes(20)">20</button>
-        <button class="quick-btn" onclick="setQuestoes(30)">30</button>
-        <button class="quick-btn" onclick="setQuestoes(50)">50</button>
-        <button class="quick-btn" onclick="setQuestoes(100)">100</button>
+        <button class="quick-btn" onclick="setQ(5)">5</button>
+        <button class="quick-btn" onclick="setQ(10)">10</button>
+        <button class="quick-btn" onclick="setQ(20)">20</button>
+        <button class="quick-btn" onclick="setQ(30)">30</button>
+        <button class="quick-btn" onclick="setQ(50)">50</button>
+        <button class="quick-btn" onclick="setQ(100)">100</button>
       </div>
       <button class="btn" id="reg-btn" onclick="registrarQuestoes()">Registrar questões</button>
       <div class="feedback-msg" id="reg-feedback"></div>
     </div>
   </div>
 
-  <!-- ── Tab: Ranking do Dia ── -->
+  <!-- Tab Hoje -->
   <div class="tab-content hidden" id="tab-dia">
     <div class="section-title">Hoje</div>
     <div class="section-sub" id="data-hoje"></div>
+
+    <!-- Líder do Ginásio -->
+    <div class="gym-card">
+      <div class="gym-badge">🏟️ Líder do Ginásio</div>
+      <div id="gym-content">
+        <div class="gym-loading"><div class="spinner"></div> Carregando...</div>
+      </div>
+    </div>
+
     <div id="rank-dia-list"><div class="loading"><div class="spinner"></div> Carregando...</div></div>
   </div>
 
-  <!-- ── Tab: Ranking Geral ── -->
+  <!-- Tab Geral -->
   <div class="tab-content hidden" id="tab-geral">
     <div class="section-title">Ranking Geral</div>
     <div class="section-sub">Total acumulado de questões</div>
     <div id="rank-geral-list"><div class="loading"><div class="spinner"></div> Carregando...</div></div>
   </div>
 
-  <!-- ── Tab: Perfil ── -->
+  <!-- Tab Perfil -->
   <div class="tab-content hidden" id="tab-perfil">
     <div class="section-title">Perfil</div>
-
     <div class="profile-header">
       <span class="profile-emoji-big" id="p-emoji">🪱</span>
       <div class="profile-name" id="p-name">—</div>
       <div class="profile-animal-tag" id="p-animal">Minhoca</div>
     </div>
-
     <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-big" id="p-total">0</div>
-        <div class="stat-label">questões totais</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-big" id="p-streak">0</div>
-        <div class="stat-label">dias de streak 🔥</div>
-      </div>
+      <div class="stat-card"><div class="stat-big" id="p-total">0</div><div class="stat-label">questões totais</div></div>
+      <div class="stat-card"><div class="stat-big" id="p-streak">0</div><div class="stat-label">dias de streak 🔥</div></div>
     </div>
-
     <div class="evolution-card">
-      <h3>Cadeia de evolução</h3>
+      <h3>Cadeia de evolução — 15 níveis</h3>
       <div id="evo-chain"></div>
     </div>
-
     <button class="logout-btn" onclick="sair()">Sair da conta</button>
   </div>
 
-  <!-- Bottom Nav -->
   <nav class="bottom-nav">
-    <button class="nav-item active" id="nav-home" onclick="mudarTab('home')">
-      <span class="nav-icon">✏️</span> Registrar
-    </button>
-    <button class="nav-item" id="nav-dia" onclick="mudarTab('dia')">
-      <span class="nav-icon">📅</span> Hoje
-    </button>
-    <button class="nav-item" id="nav-geral" onclick="mudarTab('geral')">
-      <span class="nav-icon">🏆</span> Geral
-    </button>
-    <button class="nav-item" id="nav-perfil" onclick="mudarTab('perfil')">
-      <span class="nav-icon">👤</span> Perfil
-    </button>
+    <button class="nav-item active" id="nav-home"   onclick="mudarTab('home')"><span class="nav-icon">✏️</span>Registrar</button>
+    <button class="nav-item"        id="nav-dia"    onclick="mudarTab('dia')"><span class="nav-icon">📅</span>Hoje</button>
+    <button class="nav-item"        id="nav-geral"  onclick="mudarTab('geral')"><span class="nav-icon">🏆</span>Geral</button>
+    <button class="nav-item"        id="nav-perfil" onclick="mudarTab('perfil')"><span class="nav-icon">👤</span>Perfil</button>
   </nav>
-
 </div>
 
 <script>
-// ══════════════════════════════════════════
-//  CONFIGURAÇÃO — cole a URL do Apps Script
-// ══════════════════════════════════════════
-const API_URL = 'https://script.google.com/macros/s/AKfycbxHDHVDBBm-i9Reh_BvIdV2-TsA0GexNIelNxukkzUvf8g_p4pepl2lGs4CdyC9_A/exec';
+// ══ CONFIG — substitua pela sua URL ══
+const API_URL = 'COLE_A_URL_DO_APPS_SCRIPT_AQUI';
 
-// ══════════════════════════════════════════
-//  Estado global
-// ══════════════════════════════════════════
-const ANIMAIS = ['Minhoca','Lagarta','Borboleta','Sapo','Cobra','Leão','Dragão'];
-const EMOJIS  = ['🪱','🐛','🦋','🐸','🐍','🦁','🐉'];
+// ══ Dados do sistema ══
+const ANIMAIS = ['Minhoca','Lagarta','Borboleta','Sapo','Cobra','Raposa','Lobo','Urso','Leão','Tigre','Águia','Tubarão','Dragão','Fênix','Lenda'];
+const EMOJIS  = ['🪱','🐛','🦋','🐸','🐍','🦊','🐺','🐻','🦁','🐯','🦅','🦈','🐉','🔥','⚡'];
 const THRESH  = 120;
 
-let user = JSON.parse(localStorage.getItem('studyrank_user') || 'null');
+let user     = JSON.parse(localStorage.getItem('studyrank_user') || 'null');
 let tabAtiva = 'home';
 
-// ══════════════════════════════════════════
-//  API
-// ══════════════════════════════════════════
+// ══ API ══
 async function apiGet(acao) {
   const res = await fetch(`${API_URL}?acao=${acao}`);
   return res.json();
 }
-
 async function apiPost(dados) {
   const res = await fetch(API_URL, {
     method: 'POST',
@@ -391,43 +300,30 @@ async function apiPost(dados) {
   return res.json();
 }
 
-// ══════════════════════════════════════════
-//  Login
-// ══════════════════════════════════════════
+// ══ Login ══
 async function fazerLogin() {
   const nome = document.getElementById('login-name').value.trim();
-  if (!nome) { mostrarErroLogin('Digite seu nome.'); return; }
-
+  if (!nome) { erroLogin('Digite seu nome.'); return; }
   const btn = document.getElementById('login-btn');
-  btn.disabled = true;
-  btn.textContent = 'Entrando...';
-
+  btn.disabled = true; btn.textContent = 'Entrando...';
   try {
     const res = await apiPost({ acao: 'cadastrar', nome });
     if (res.erro) throw new Error(res.erro);
     user = res.usuario;
     localStorage.setItem('studyrank_user', JSON.stringify(user));
     iniciarApp();
-  } catch (e) {
-    mostrarErroLogin('Erro ao conectar. Verifique a URL da API.');
-    btn.disabled = false;
-    btn.textContent = 'Entrar';
+  } catch(e) {
+    erroLogin('Erro ao conectar. Verifique a URL da API.');
+    btn.disabled = false; btn.textContent = 'Entrar';
   }
 }
-
-function mostrarErroLogin(msg) {
+function erroLogin(msg) {
   const el = document.getElementById('login-error');
-  el.textContent = msg;
-  el.style.display = 'block';
+  el.textContent = msg; el.style.display = 'block';
 }
+document.getElementById('login-name').addEventListener('keydown', e => { if (e.key === 'Enter') fazerLogin(); });
 
-document.getElementById('login-name').addEventListener('keydown', e => {
-  if (e.key === 'Enter') fazerLogin();
-});
-
-// ══════════════════════════════════════════
-//  Iniciar app
-// ══════════════════════════════════════════
+// ══ Iniciar ══
 function iniciarApp() {
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('app').classList.add('visible');
@@ -453,11 +349,9 @@ function atualizarPerfil() {
   document.getElementById('p-total').textContent  = user.total  || 0;
   document.getElementById('p-streak').textContent = user.streak || 0;
 
-  // Cadeia de evolução
-  const chain = document.getElementById('evo-chain');
   const total = user.total || 0;
   const nivelAtual = Math.min(Math.floor(total / THRESH), ANIMAIS.length - 1);
-  chain.innerHTML = ANIMAIS.map((a, i) => {
+  document.getElementById('evo-chain').innerHTML = ANIMAIS.map((a, i) => {
     const req = i * THRESH;
     const concluido = total >= req;
     const atual = i === nivelAtual;
@@ -471,67 +365,48 @@ function atualizarPerfil() {
 }
 
 function atualizarProgresso() {
-  const total = user.total || 0;
-  const nivel = Math.min(Math.floor(total / THRESH), ANIMAIS.length - 1);
+  const total  = user.total || 0;
+  const nivel  = Math.min(Math.floor(total / THRESH), ANIMAIS.length - 1);
   const inicio = nivel * THRESH;
-  const fim    = (nivel + 1) * THRESH;
   const pct    = nivel >= ANIMAIS.length - 1 ? 100 : Math.round((total - inicio) / THRESH * 100);
-  const restam = Math.max(0, fim - total);
+  const restam = Math.max(0, (nivel + 1) * THRESH - total);
 
   document.getElementById('prog-fill').style.width = pct + '%';
   document.getElementById('prog-text').textContent = `${total - inicio} / ${THRESH}`;
-
-  if (nivel < ANIMAIS.length - 1) {
-    document.getElementById('next-animal-text').textContent =
-      `Próximo: ${ANIMAIS[nivel + 1]} ${EMOJIS[nivel + 1]} — faltam ${restam} questões`;
-  } else {
-    document.getElementById('next-animal-text').textContent = 'Nível máximo atingido! 🐉';
-  }
+  document.getElementById('next-animal-text').textContent = nivel < ANIMAIS.length - 1
+    ? `Próximo: ${ANIMAIS[nivel + 1]} ${EMOJIS[nivel + 1]} — faltam ${restam} questões`
+    : 'Nível máximo: Lenda ⚡';
 }
 
-// ══════════════════════════════════════════
-//  Registrar questões
-// ══════════════════════════════════════════
-function ajustarQuestoes(delta) {
+// ══ Registrar ══
+function ajustarQuestoes(d) {
   const inp = document.getElementById('questoes-input');
-  inp.value = Math.max(1, (parseInt(inp.value) || 0) + delta);
+  inp.value = Math.max(1, (parseInt(inp.value) || 0) + d);
 }
-
-function setQuestoes(n) {
-  document.getElementById('questoes-input').value = n;
-}
+function setQ(n) { document.getElementById('questoes-input').value = n; }
 
 async function registrarQuestoes() {
   const questoes = parseInt(document.getElementById('questoes-input').value) || 0;
-  if (questoes <= 0) { mostrarFeedback('Coloque ao menos 1 questão.', false); return; }
-
+  if (questoes <= 0) { feedback('Coloque ao menos 1 questão.', false); return; }
   const btn = document.getElementById('reg-btn');
-  btn.disabled = true;
-  btn.textContent = 'Registrando...';
-
+  btn.disabled = true; btn.textContent = 'Registrando...';
   try {
     const res = await apiPost({ acao: 'registrar', userId: user.id, questoes });
     if (res.erro) throw new Error(res.erro);
-
     user.total  = res.total;
     user.animal = res.animal;
     user.emoji  = res.emoji;
     user.streak = res.streak !== undefined ? res.streak : user.streak;
     localStorage.setItem('studyrank_user', JSON.stringify(user));
-
-    atualizarHeader();
-    atualizarPerfil();
-    atualizarProgresso();
-    mostrarFeedback(`+${questoes} questões! Total hoje: ${res.questoesHoje} 🎉`, true);
-  } catch (e) {
-    mostrarFeedback('Erro ao registrar. Tente de novo.', false);
+    atualizarHeader(); atualizarPerfil(); atualizarProgresso();
+    feedback(`+${questoes} questões! Total hoje: ${res.questoesHoje} 🎉`, true);
+  } catch(e) {
+    feedback('Erro ao registrar. Tente de novo.', false);
   }
-
-  btn.disabled = false;
-  btn.textContent = 'Registrar questões';
+  btn.disabled = false; btn.textContent = 'Registrar questões';
 }
 
-function mostrarFeedback(msg, ok) {
+function feedback(msg, ok) {
   const el = document.getElementById('reg-feedback');
   el.textContent = msg;
   el.className = 'feedback-msg ' + (ok ? 'success' : 'error');
@@ -539,33 +414,63 @@ function mostrarFeedback(msg, ok) {
   setTimeout(() => { el.style.display = 'none'; }, 4000);
 }
 
-// ══════════════════════════════════════════
-//  Rankings
-// ══════════════════════════════════════════
+// ══ Ranking do Dia ══
 async function carregarRankDia() {
-  const el = document.getElementById('rank-dia-list');
-  el.innerHTML = '<div class="loading"><div class="spinner"></div> Carregando...</div>';
+  const gymEl = document.getElementById('gym-content');
+  const listEl = document.getElementById('rank-dia-list');
+  gymEl.innerHTML  = '<div class="gym-loading"><div class="spinner"></div> Carregando...</div>';
+  listEl.innerHTML = '<div class="loading"><div class="spinner"></div> Carregando...</div>';
+
   try {
     const data = await apiGet('rankDia');
-    if (!data.length) { el.innerHTML = '<div class="empty-state">Ninguém registrou questões hoje ainda.</div>'; return; }
-    el.innerHTML = '<div class="rank-list">' + data.map((item, i) => {
+
+    // Líder do Ginásio
+    if (!data.length) {
+      gymEl.innerHTML = '<div class="gym-empty">Ninguém registrou questões hoje ainda. Seja o primeiro!</div>';
+    } else {
+      const lider = data[0];
+      const eu = lider.nome.toLowerCase() === user.nome.toLowerCase();
+      gymEl.innerHTML = `
+        <div class="gym-leader-row">
+          <span class="gym-leader-emoji">${lider.emoji || '🪱'}</span>
+          <div class="gym-leader-info">
+            <div class="gym-leader-name">${lider.nome}${eu ? ' 👑' : ''}</div>
+            <div class="gym-leader-animal">${lider.animal || 'Minhoca'}</div>
+          </div>
+          <div class="gym-leader-count">
+            <div class="gym-count-big">${lider.questoes}</div>
+            <div class="gym-count-label">questões hoje</div>
+          </div>
+        </div>`;
+    }
+
+    // Lista completa
+    if (!data.length) {
+      listEl.innerHTML = '<div class="empty-state">Ninguém registrou questões hoje ainda.</div>';
+      return;
+    }
+    listEl.innerHTML = '<div class="rank-list">' + data.map((item, i) => {
       const eu = item.nome.toLowerCase() === user.nome.toLowerCase();
       return `<div class="rank-item ${i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':''} ${eu?'rank-me':''}">
         <span class="rank-pos ${i===0?'p1':i===1?'p2':i===2?'p3':''}">${i+1}</span>
+        <span class="rank-emoji">${item.emoji || '🪱'}</span>
         <div class="rank-info">
           <div class="rank-name">${item.nome}${eu?' (você)':''}</div>
+          <div class="rank-animal">${item.animal || 'Minhoca'}</div>
         </div>
         <div class="rank-num">
           <div class="rank-big">${item.questoes}</div>
-          <div class="rank-unit">questões</div>
+          <div class="rank-unit">hoje</div>
         </div>
       </div>`;
     }).join('') + '</div>';
   } catch(e) {
-    el.innerHTML = '<div class="empty-state">Erro ao carregar. Verifique a conexão.</div>';
+    gymEl.innerHTML  = '<div class="gym-empty">Erro ao carregar.</div>';
+    listEl.innerHTML = '<div class="empty-state">Erro ao carregar. Verifique a conexão.</div>';
   }
 }
 
+// ══ Ranking Geral ══
 async function carregarRankGeral() {
   const el = document.getElementById('rank-geral-list');
   el.innerHTML = '<div class="loading"><div class="spinner"></div> Carregando...</div>';
@@ -588,42 +493,30 @@ async function carregarRankGeral() {
       </div>`;
     }).join('') + '</div>';
   } catch(e) {
-    el.innerHTML = '<div class="empty-state">Erro ao carregar. Verifique a conexão.</div>';
+    el.innerHTML = '<div class="empty-state">Erro ao carregar.</div>';
   }
 }
 
-// ══════════════════════════════════════════
-//  Navegação
-// ══════════════════════════════════════════
+// ══ Navegação ══
 function mudarTab(tab) {
   document.getElementById('tab-' + tabAtiva).classList.add('hidden');
   document.getElementById('nav-' + tabAtiva).classList.remove('active');
   tabAtiva = tab;
   document.getElementById('tab-' + tab).classList.remove('hidden');
   document.getElementById('nav-' + tab).classList.add('active');
-
-  if (tab === 'dia')    carregarRankDia();
-  if (tab === 'geral')  carregarRankGeral();
+  if (tab === 'dia')   carregarRankDia();
+  if (tab === 'geral') carregarRankGeral();
   if (tab === 'perfil') atualizarPerfil();
 }
 
-// ══════════════════════════════════════════
-//  Logout
-// ══════════════════════════════════════════
 function sair() {
-  if (!confirm('Sair da conta? Você precisará digitar o nome de novo.')) return;
+  if (!confirm('Sair da conta?')) return;
   localStorage.removeItem('studyrank_user');
   location.reload();
 }
 
-// ══════════════════════════════════════════
-//  Inicialização
-// ══════════════════════════════════════════
-if (user) {
-  iniciarApp();
-} else {
-  document.getElementById('login-screen').style.display = 'flex';
-}
+// ══ Inicialização ══
+if (user) iniciarApp();
 </script>
 </body>
 </html>
