@@ -1,529 +1,25 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>StudyRank</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>StudyRank</title>
 
-:root {
-  --bg:     #080b12;
-  --bg2:    #0e1220;
-  --bg3:    #151929;
-  --bg4:    #1c2135;
-  --border: #1e2540;
-  --border2:#2a3158;
-  --gold:   #f5c842;
-  --gold2:  #fde68a;
-  --gold3:  #92600a;
-  --purple: #7c6af7;
-  --purple2:#a89af9;
-  --blue:   #3b82f6;
-  --teal:   #2dd4bf;
-  --text:   #e2e8f0;
-  --muted:  #4a5578;
-  --muted2: #6b7aab;
-  --success:#34d399;
-  --danger: #f87171;
-  --warn:   #fb923c;
-  --gym:    #ff6b35;
-  --gym2:   #ff8c5a;
-  --radius: 16px;
-  --radius-sm: 10px;
-  --shadow: 0 4px 24px rgba(0,0,0,.5);
-  --nav-h: 64px;
-}
+  <!-- Fontes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-html { height: 100%; }
-body {
-  min-height: 100%;
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Syne', sans-serif;
-  font-size: 15px;
-  line-height: 1.5;
-  display: flex;
-  flex-direction: column;
-  max-width: 480px;
-  margin: 0 auto;
-  overflow-x: hidden;
-  -webkit-tap-highlight-color: transparent;
-}
-
-/* ── Noise texture overlay ── */
-body::before {
-  content: '';
-  position: fixed; inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events: none; z-index: 0; opacity: 0.4;
-}
-
-/* ── Login ── */
-#login-screen {
-  display: flex; flex-direction: column; justify-content: center;
-  align-items: center; min-height: 100vh; padding: 2rem; gap: 2rem;
-  position: relative; z-index: 1;
-}
-.login-bg-glow {
-  position: fixed; top: -20%; left: 50%; transform: translateX(-50%);
-  width: 600px; height: 600px;
-  background: radial-gradient(ellipse, rgba(124,106,247,.12) 0%, transparent 70%);
-  pointer-events: none;
-}
-.login-logo { text-align: center; }
-.login-logo .mascot { font-size: 5.5rem; display: block; margin-bottom: 0.75rem; animation: float 3s ease-in-out infinite; }
-@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
-.login-logo .title {
-  font-family: 'Bebas Neue', sans-serif; font-size: 4.5rem;
-  letter-spacing: 4px; color: var(--gold); line-height: 1;
-  text-shadow: 0 0 40px rgba(245,200,66,.3);
-}
-.login-logo .sub {
-  font-size: 0.78rem; color: var(--muted2); letter-spacing: 3px;
-  text-transform: uppercase; margin-top: 8px;
-}
-.login-card {
-  width: 100%; background: var(--bg2);
-  border: 1px solid var(--border2); border-radius: var(--radius);
-  padding: 1.75rem; box-shadow: var(--shadow);
-}
-.login-card h2 { font-size: 1rem; font-weight: 600; margin-bottom: 1.4rem; color: var(--text); }
-.field { margin-bottom: 1rem; }
-.field label {
-  display: block; font-size: 0.72rem; color: var(--muted2); margin-bottom: 6px;
-  text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600;
-}
-.field input {
-  width: 100%; padding: 0.85rem 1.1rem;
-  background: var(--bg3); border: 1px solid var(--border2);
-  border-radius: var(--radius-sm); color: var(--text);
-  font-family: 'Syne', sans-serif; font-size: 1rem; outline: none;
-  transition: border-color .2s, box-shadow .2s;
-}
-.field input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(245,200,66,.1); }
-.btn {
-  width: 100%; padding: 0.9rem;
-  background: linear-gradient(135deg, var(--gold), #e8a800);
-  color: #080b12; border: none; border-radius: var(--radius-sm);
-  font-family: 'Bebas Neue', sans-serif; font-size: 1.25rem;
-  letter-spacing: 2px; cursor: pointer; transition: opacity .15s, transform .1s;
-  font-weight: 400;
-}
-.btn:hover { opacity: 0.92; }
-.btn:active { transform: scale(0.98); }
-.btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
-.btn-sm {
-  padding: 0.65rem 1rem; font-size: 1rem; width: auto;
-  border-radius: var(--radius-sm);
-}
-.feedback-msg {
-  margin-top: 1rem; padding: 0.75rem 1rem; border-radius: var(--radius-sm);
-  font-size: 0.875rem; text-align: center; display: none; line-height: 1.4;
-}
-.feedback-msg.success { background: rgba(52,211,153,.08); border: 1px solid rgba(52,211,153,.25); color: var(--success); }
-.feedback-msg.error   { background: rgba(248,113,113,.08); border: 1px solid rgba(248,113,113,.25); color: var(--danger); }
-
-/* ── App shell ── */
-#app { display: none; flex-direction: column; min-height: 100vh; position: relative; z-index: 1; }
-#app.visible { display: flex; }
-
-/* ── Header ── */
-.app-header {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0.9rem 1.2rem; border-bottom: 1px solid var(--border);
-  background: rgba(8,11,18,.9); backdrop-filter: blur(12px);
-  position: sticky; top: 0; z-index: 20;
-}
-.header-user { display: flex; align-items: center; gap: 10px; }
-.header-emoji { font-size: 1.8rem; line-height: 1; }
-.header-name { font-weight: 700; font-size: 0.95rem; }
-.header-animal { font-size: 0.72rem; color: var(--gold); font-weight: 600; letter-spacing: 0.5px; }
-.header-right { display: flex; align-items: center; gap: 8px; }
-.header-streak {
-  display: flex; align-items: center; gap: 5px;
-  background: var(--bg3); border: 1px solid var(--border2);
-  border-radius: 20px; padding: 4px 12px; font-size: 0.8rem;
-  color: var(--warn); font-weight: 600;
-}
-.header-level {
-  display: flex; align-items: center; justify-content: center;
-  width: 32px; height: 32px; background: var(--bg3);
-  border: 1px solid var(--border2); border-radius: 50%;
-  font-family: 'Bebas Neue', sans-serif; font-size: 0.9rem;
-  color: var(--purple2); letter-spacing: 0;
-}
-
-/* ── Tabs ── */
-.tab-content {
-  flex: 1; overflow-y: auto; padding: 1.2rem 1rem;
-  padding-bottom: calc(var(--nav-h) + 1.2rem);
-}
-.tab-content.hidden { display: none; }
-
-/* ── Bottom Nav ── */
-.bottom-nav {
-  position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
-  width: 100%; max-width: 480px;
-  display: flex; background: rgba(14,18,32,.95); backdrop-filter: blur(16px);
-  border-top: 1px solid var(--border); z-index: 20;
-  height: var(--nav-h);
-}
-.nav-item {
-  flex: 1; display: flex; flex-direction: column; align-items: center;
-  justify-content: center; padding: 0.5rem 0; gap: 3px; cursor: pointer;
-  color: var(--muted); font-size: 0.65rem; letter-spacing: 0.5px;
-  font-weight: 600; border: none; background: none;
-  transition: color .15s; text-transform: uppercase;
-}
-.nav-item.active { color: var(--gold); }
-.nav-item.active .nav-icon { filter: drop-shadow(0 0 6px rgba(245,200,66,.5)); }
-.nav-icon { font-size: 1.25rem; transition: transform .15s; }
-.nav-item:active .nav-icon { transform: scale(0.88); }
-
-/* ── Section titles ── */
-.section-title {
-  font-family: 'Bebas Neue', sans-serif; font-size: 1.7rem;
-  letter-spacing: 2px; color: var(--gold); margin-bottom: 0.25rem;
-}
-.section-sub { font-size: 0.78rem; color: var(--muted2); margin-bottom: 1.1rem; }
-
-/* ── Cards ── */
-.card {
-  background: var(--bg2); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 1.25rem;
-  margin-bottom: 1rem;
-}
-.card-sm { padding: 1rem; border-radius: var(--radius-sm); margin-bottom: 0.75rem; }
-
-/* ── Progress Card ── */
-.progress-card {
-  background: linear-gradient(135deg, var(--bg2), var(--bg3));
-  border: 1px solid var(--border2);
-  border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1rem;
-  position: relative; overflow: hidden;
-}
-.progress-card::after {
-  content: '';
-  position: absolute; top: 0; right: 0;
-  width: 120px; height: 120px;
-  background: radial-gradient(circle, rgba(124,106,247,.08) 0%, transparent 70%);
-  pointer-events: none;
-}
-.progress-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
-.progress-level-info { display: flex; flex-direction: column; }
-.progress-level-label { font-size: 0.7rem; color: var(--muted2); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
-.progress-level-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; color: var(--text); letter-spacing: 1px; }
-.progress-pct { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--gold); line-height: 1; }
-.progress-bar {
-  height: 10px; background: var(--bg4); border-radius: 99px;
-  overflow: hidden; margin-bottom: 8px; position: relative;
-}
-.progress-fill {
-  height: 100%; border-radius: 99px;
-  background: linear-gradient(90deg, var(--purple), var(--gold));
-  transition: width .6s cubic-bezier(.34,1.56,.64,1);
-  position: relative;
-}
-.progress-fill::after {
-  content: '';
-  position: absolute; right: 0; top: 50%; transform: translateY(-50%);
-  width: 10px; height: 10px; border-radius: 50%;
-  background: var(--gold); box-shadow: 0 0 8px var(--gold);
-}
-.progress-meta { display: flex; justify-content: space-between; align-items: center; }
-.progress-count { font-size: 0.8rem; color: var(--muted2); }
-.progress-next { font-size: 0.78rem; color: var(--purple2); font-weight: 600; }
-
-/* ── Register Card ── */
-.register-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1rem; }
-.register-card h3 { font-size: 0.72rem; color: var(--muted2); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; margin-bottom: 1rem; }
-.number-input-row { display: flex; gap: 10px; align-items: center; margin-bottom: 1rem; }
-.num-btn {
-  width: 48px; height: 48px; background: var(--bg3);
-  border: 1px solid var(--border2); border-radius: var(--radius-sm);
-  color: var(--text); font-size: 1.5rem; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0; transition: background .1s, border-color .1s;
-}
-.num-btn:active { background: var(--border); border-color: var(--gold); }
-#questoes-input {
-  flex: 1; text-align: center;
-  font-family: 'Bebas Neue', sans-serif; font-size: 2.4rem;
-  letter-spacing: 2px; padding: 0.5rem;
-  background: var(--bg3); border: 1px solid var(--border2);
-  border-radius: var(--radius-sm); color: var(--gold); outline: none;
-  transition: border-color .2s;
-}
-#questoes-input:focus { border-color: var(--gold); }
-.quick-btns { display: flex; gap: 6px; margin-bottom: 1rem; flex-wrap: wrap; }
-.quick-btn {
-  padding: 5px 13px; background: var(--bg3);
-  border: 1px solid var(--border2); border-radius: 20px;
-  color: var(--muted2); font-size: 0.82rem; cursor: pointer;
-  font-family: 'Syne', sans-serif; font-weight: 600;
-  transition: all .15s;
-}
-.quick-btn:hover, .quick-btn:active { border-color: var(--gold); color: var(--gold); background: rgba(245,200,66,.06); }
-
-/* ── Today stats mini ── */
-.today-mini {
-  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 1rem;
-}
-.today-mini-item {
-  background: var(--bg2); border: 1px solid var(--border);
-  border-radius: var(--radius-sm); padding: 0.75rem 0.5rem;
-  text-align: center;
-}
-.today-mini-big { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; color: var(--gold); line-height: 1; }
-.today-mini-label { font-size: 0.65rem; color: var(--muted2); margin-top: 3px; text-transform: uppercase; letter-spacing: 0.5px; }
-
-/* ── Gym Card ── */
-.gym-card {
-  background: linear-gradient(135deg, #150e20 0%, #1a1230 100%);
-  border: 1px solid rgba(255,107,53,.35); border-radius: var(--radius);
-  padding: 1.2rem 1.4rem; margin-bottom: 1rem; position: relative; overflow: hidden;
-}
-.gym-card::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, transparent, var(--gym), var(--gold), var(--gym), transparent);
-}
-.gym-card::after {
-  content: '🏟️';
-  position: absolute; right: -10px; bottom: -10px;
-  font-size: 5rem; opacity: 0.05; pointer-events: none;
-}
-.gym-badge {
-  display: inline-flex; align-items: center; gap: 6px;
-  background: rgba(255,107,53,.1); border: 1px solid rgba(255,107,53,.25);
-  color: var(--gym2); border-radius: 20px; padding: 3px 10px;
-  font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 1px; margin-bottom: 12px;
-}
-.gym-leader-row { display: flex; align-items: center; gap: 14px; }
-.gym-leader-emoji { font-size: 3.2rem; line-height: 1; filter: drop-shadow(0 0 12px rgba(255,107,53,.4)); }
-.gym-leader-info { flex: 1; min-width: 0; }
-.gym-leader-name {
-  font-family: 'Bebas Neue', sans-serif; font-size: 1.7rem;
-  letter-spacing: 1px; color: var(--text); line-height: 1.1;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.gym-leader-animal { font-size: 0.78rem; color: var(--gym2); margin-top: 2px; font-weight: 600; }
-.gym-leader-count { text-align: right; flex-shrink: 0; }
-.gym-count-big { font-family: 'Bebas Neue', sans-serif; font-size: 2.6rem; color: var(--gym); line-height: 1; }
-.gym-count-label { font-size: 0.68rem; color: var(--muted2); margin-top: 2px; }
-.gym-empty { text-align: center; color: var(--muted2); font-size: 0.85rem; padding: 0.75rem 0; }
-.gym-loading { display: flex; justify-content: center; gap: 8px; align-items: center; color: var(--muted2); font-size: 0.85rem; padding: 0.5rem 0; }
-
-/* ── Rank list ── */
-.rank-list { display: flex; flex-direction: column; gap: 8px; }
-.rank-item {
-  display: flex; align-items: center; gap: 12px;
-  background: var(--bg2); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 0.85rem 1rem;
-  transition: border-color .15s;
-}
-.rank-item.rank-1 { border-color: rgba(245,200,66,.5); background: rgba(245,200,66,.03); }
-.rank-item.rank-2 { border-color: rgba(148,163,184,.4); }
-.rank-item.rank-3 { border-color: rgba(184,115,51,.4); }
-.rank-item.rank-me { background: rgba(124,106,247,.06); border-color: var(--purple) !important; }
-.rank-pos {
-  font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem;
-  color: var(--muted); min-width: 28px; text-align: center; line-height: 1;
-}
-.rank-pos.p1 { color: var(--gold); text-shadow: 0 0 10px rgba(245,200,66,.5); }
-.rank-pos.p2 { color: #94a3b8; }
-.rank-pos.p3 { color: #b87333; }
-.rank-emoji { font-size: 1.7rem; line-height: 1; flex-shrink: 0; }
-.rank-info { flex: 1; min-width: 0; }
-.rank-name { font-weight: 700; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.rank-sub { font-size: 0.72rem; color: var(--muted2); margin-top: 1px; }
-.rank-num { text-align: right; flex-shrink: 0; }
-.rank-big { font-family: 'Bebas Neue', sans-serif; font-size: 1.9rem; color: var(--gold); line-height: 1; }
-.rank-unit { font-size: 0.65rem; color: var(--muted2); }
-
-/* ── Semana / Weekly ── */
-.week-nav {
-  display: flex; align-items: center; justify-content: space-between;
-  background: var(--bg2); border: 1px solid var(--border);
-  border-radius: var(--radius-sm); padding: 0.6rem 0.8rem; margin-bottom: 1rem;
-}
-.week-nav-btn {
-  background: none; border: none; color: var(--muted2); cursor: pointer;
-  font-size: 1.1rem; padding: 4px 8px; border-radius: 6px;
-  transition: color .15s; display: flex; align-items: center; justify-content: center;
-}
-.week-nav-btn:hover { color: var(--gold); }
-.week-nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-.week-label { font-size: 0.82rem; color: var(--text); font-weight: 600; text-align: center; }
-.week-sublabel { font-size: 0.68rem; color: var(--muted2); text-align: center; }
-
-.week-winner-card {
-  background: linear-gradient(135deg, #0f1a14 0%, #141f1a 100%);
-  border: 1px solid rgba(52,211,153,.3); border-radius: var(--radius);
-  padding: 1.2rem 1.4rem; margin-bottom: 1rem; position: relative; overflow: hidden;
-}
-.week-winner-card::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, transparent, var(--success), transparent);
-}
-.week-badge {
-  display: inline-flex; align-items: center; gap: 5px;
-  background: rgba(52,211,153,.08); border: 1px solid rgba(52,211,153,.2);
-  color: var(--success); border-radius: 20px; padding: 3px 10px;
-  font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 1px; margin-bottom: 10px;
-}
-.week-winner-row { display: flex; align-items: center; gap: 14px; }
-.week-winner-emoji { font-size: 3rem; line-height: 1; }
-.week-winner-info { flex: 1; min-width: 0; }
-.week-winner-name {
-  font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem;
-  letter-spacing: 1px; line-height: 1.1;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.week-winner-sub { font-size: 0.78rem; color: var(--success); margin-top: 2px; font-weight: 600; }
-.week-winner-count { text-align: right; flex-shrink: 0; }
-.week-count-big { font-family: 'Bebas Neue', sans-serif; font-size: 2.4rem; color: var(--success); line-height: 1; }
-.week-count-label { font-size: 0.68rem; color: var(--muted2); }
-
-.week-no-data {
-  text-align: center; padding: 2rem 1rem;
-  color: var(--muted2); font-size: 0.85rem;
-}
-.week-no-data .big-icon { font-size: 2.5rem; display: block; margin-bottom: 0.5rem; }
-
-/* ── Tabs dentro de abas ── */
-.sub-tabs { display: flex; gap: 6px; margin-bottom: 1rem; }
-.sub-tab {
-  flex: 1; padding: 0.55rem; background: var(--bg2);
-  border: 1px solid var(--border2); border-radius: var(--radius-sm);
-  color: var(--muted2); font-size: 0.78rem; cursor: pointer;
-  font-family: 'Syne', sans-serif; font-weight: 600;
-  text-align: center; transition: all .15s;
-}
-.sub-tab.active { background: rgba(245,200,66,.08); border-color: var(--gold); color: var(--gold); }
-
-/* ── Perfil ── */
-.profile-header {
-  background: var(--bg2); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 1.75rem; text-align: center;
-  margin-bottom: 1rem; position: relative; overflow: hidden;
-}
-.profile-header::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0;
-  height: 80px;
-  background: linear-gradient(180deg, rgba(124,106,247,.08) 0%, transparent 100%);
-}
-.profile-emoji-big {
-  font-size: 5rem; display: block; margin-bottom: 0.6rem;
-  filter: drop-shadow(0 0 20px rgba(245,200,66,.3));
-}
-.profile-name { font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; letter-spacing: 2px; }
-.profile-tag {
-  display: inline-block; background: rgba(245,200,66,.08);
-  border: 1px solid rgba(245,200,66,.25); color: var(--gold);
-  border-radius: 20px; padding: 4px 16px; font-size: 0.82rem;
-  margin-top: 8px; font-weight: 600;
-}
-.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 1rem; }
-.stat-card {
-  background: var(--bg2); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 1.1rem; text-align: center;
-}
-.stat-big { font-family: 'Bebas Neue', sans-serif; font-size: 2.3rem; color: var(--gold); line-height: 1; }
-.stat-label { font-size: 0.72rem; color: var(--muted2); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
-
-/* ── Cadeia Evolução ── */
-.evolution-card {
-  background: var(--bg2); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1rem;
-  overflow: hidden;
-}
-.evolution-card h3 {
-  font-size: 0.72rem; color: var(--muted2); text-transform: uppercase;
-  letter-spacing: 1.5px; font-weight: 600; margin-bottom: 1rem;
-}
-.evo-tiers { display: flex; flex-direction: column; gap: 0; }
-.evo-tier-header {
-  font-size: 0.65rem; color: var(--muted); text-transform: uppercase;
-  letter-spacing: 1px; font-weight: 700; padding: 0.4rem 0 0.3rem;
-  margin-top: 0.5rem; border-top: 1px solid var(--border);
-}
-.evo-tier-header:first-child { border-top: none; margin-top: 0; }
-.evo-row {
-  display: flex; align-items: center; gap: 10px;
-  padding: 0.5rem 0.4rem; border-radius: 8px;
-  transition: background .15s;
-}
-.evo-row.current { background: rgba(245,200,66,.06); }
-.evo-row.unlocked { opacity: 1; }
-.evo-row.locked { opacity: 0.4; }
-.evo-emoji { font-size: 1.25rem; min-width: 30px; text-align: center; }
-.evo-name { font-size: 0.88rem; flex: 1; font-weight: 500; }
-.evo-row.current .evo-name { color: var(--gold); font-weight: 700; }
-.evo-req { font-size: 0.72rem; color: var(--muted2); }
-.evo-check { font-size: 0.85rem; color: var(--success); }
-.evo-current-marker {
-  font-size: 0.65rem; color: var(--gold); font-weight: 700;
-  background: rgba(245,200,66,.12); border: 1px solid rgba(245,200,66,.25);
-  border-radius: 10px; padding: 1px 7px; white-space: nowrap;
-}
-
-/* ── Achievements / Badges ── */
-.badges-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 1rem; }
-.badge-item {
-  background: var(--bg2); border: 1px solid var(--border);
-  border-radius: var(--radius-sm); padding: 0.85rem 0.5rem;
-  text-align: center; position: relative; overflow: hidden;
-}
-.badge-item.earned { border-color: rgba(245,200,66,.3); background: rgba(245,200,66,.04); }
-.badge-item.locked { opacity: 0.4; filter: grayscale(1); }
-.badge-icon { font-size: 1.6rem; display: block; margin-bottom: 4px; }
-.badge-name { font-size: 0.68rem; color: var(--text); font-weight: 600; line-height: 1.2; }
-.badge-desc { font-size: 0.62rem; color: var(--muted2); margin-top: 2px; }
-
-/* ── Misc ── */
-.empty-state { text-align: center; color: var(--muted2); padding: 3rem 1rem; font-size: 0.88rem; }
-.loading { display: flex; justify-content: center; align-items: center; padding: 2rem; gap: 8px; color: var(--muted2); font-size: 0.9rem; }
-@keyframes spin { to { transform: rotate(360deg); } }
-.spinner { width: 16px; height: 16px; border: 2px solid var(--border2); border-top-color: var(--gold); border-radius: 50%; animation: spin .7s linear infinite; flex-shrink: 0; }
-.logout-btn {
-  width: 100%; padding: 0.8rem; background: transparent;
-  border: 1px solid var(--border2); border-radius: var(--radius-sm);
-  color: var(--muted2); font-family: 'Syne', sans-serif; font-size: 0.9rem;
-  cursor: pointer; transition: all .15s; font-weight: 600;
-}
-.logout-btn:hover { color: var(--danger); border-color: var(--danger); }
-.divider { height: 1px; background: var(--border); margin: 0.75rem 0; }
-
-/* ── Tier colors ── */
-.tier-bronze .evo-name { }
-.tier-silver .evo-name { color: #94a3b8; }
-.tier-gold .evo-name { color: var(--gold2); }
-.tier-diamond .evo-name { color: var(--teal); }
-.tier-legendary .evo-name { color: var(--purple2); }
-
-::-webkit-scrollbar { width: 3px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 99px; }
-
-/* ── Responsive fine-tuning ── */
-@media (max-width: 360px) {
-  .login-logo .title { font-size: 3.5rem; }
-  .gym-count-big { font-size: 2rem; }
-  .badges-grid { grid-template-columns: repeat(3, 1fr); }
-}
-</style>
+  <!-- Estilos -->
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/login.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
 </head>
 <body>
 
-<!-- LOGIN -->
+<!-- ════════════════════════════════════════
+     LOGIN
+════════════════════════════════════════ -->
 <div id="login-screen">
   <div class="login-bg-glow"></div>
   <div class="login-logo">
@@ -542,14 +38,18 @@ body::before {
   </div>
 </div>
 
-<!-- APP -->
+
+<!-- ════════════════════════════════════════
+     APP
+════════════════════════════════════════ -->
 <div id="app">
 
+  <!-- Header fixo -->
   <div class="app-header">
     <div class="header-user">
       <span class="header-emoji" id="h-emoji">🪱</span>
       <div>
-        <div class="header-name" id="h-name">—</div>
+        <div class="header-name"   id="h-name">—</div>
         <div class="header-animal" id="h-animal">Minhoca</div>
       </div>
     </div>
@@ -559,7 +59,8 @@ body::before {
     </div>
   </div>
 
-  <!-- ── Tab Registrar ── -->
+
+  <!-- ── Tab: Registrar ── -->
   <div class="tab-content" id="tab-home">
     <div class="section-title">Registrar</div>
     <div class="section-sub" id="data-home"></div>
@@ -572,24 +73,26 @@ body::before {
         </div>
         <div class="progress-pct" id="prog-pct">0%</div>
       </div>
-      <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="prog-fill" style="width:0%"></div>
+      </div>
       <div class="progress-meta">
         <span class="progress-count" id="prog-count">0 / 0 questões</span>
-        <span class="progress-next" id="prog-next">Próximo: Lagarta 🐛</span>
+        <span class="progress-next"  id="prog-next">Próximo: Lagarta 🐛</span>
       </div>
     </div>
 
     <div class="today-mini">
       <div class="today-mini-item">
-        <div class="today-mini-big" id="mini-hoje">0</div>
+        <div class="today-mini-big"   id="mini-hoje">0</div>
         <div class="today-mini-label">Hoje</div>
       </div>
       <div class="today-mini-item">
-        <div class="today-mini-big" id="mini-total">0</div>
+        <div class="today-mini-big"   id="mini-total">0</div>
         <div class="today-mini-label">Total</div>
       </div>
       <div class="today-mini-item">
-        <div class="today-mini-big" id="mini-nivel">1</div>
+        <div class="today-mini-big"   id="mini-nivel">1</div>
         <div class="today-mini-label">Nível</div>
       </div>
     </div>
@@ -617,7 +120,8 @@ body::before {
     </div>
   </div>
 
-  <!-- ── Tab Hoje ── -->
+
+  <!-- ── Tab: Hoje ── -->
   <div class="tab-content hidden" id="tab-dia">
     <div class="section-title">Hoje</div>
     <div class="section-sub" id="data-hoje"></div>
@@ -629,10 +133,13 @@ body::before {
       </div>
     </div>
 
-    <div id="rank-dia-list"><div class="loading"><div class="spinner"></div> Carregando...</div></div>
+    <div id="rank-dia-list">
+      <div class="loading"><div class="spinner"></div> Carregando...</div>
+    </div>
   </div>
 
-  <!-- ── Tab Semana ── -->
+
+  <!-- ── Tab: Semanas ── -->
   <div class="tab-content hidden" id="tab-semana">
     <div class="section-title">Semanas</div>
     <div class="section-sub">Histórico de campeões semanais</div>
@@ -640,7 +147,7 @@ body::before {
     <div class="week-nav">
       <button class="week-nav-btn" id="week-prev-btn" onclick="navegarSemana(-1)">&#8592;</button>
       <div>
-        <div class="week-label" id="week-label">Semana atual</div>
+        <div class="week-label"    id="week-label">Semana atual</div>
         <div class="week-sublabel" id="week-sublabel"></div>
       </div>
       <button class="week-nav-btn" id="week-next-btn" onclick="navegarSemana(1)" disabled>&#8594;</button>
@@ -650,32 +157,42 @@ body::before {
 
     <div class="sub-tabs" style="margin-top:0.5rem;">
       <button class="sub-tab active" id="subtab-ranking" onclick="subTab('ranking')">Ranking da semana</button>
-      <button class="sub-tab" id="subtab-hist"    onclick="subTab('hist')">Hall da fama</button>
+      <button class="sub-tab"        id="subtab-hist"    onclick="subTab('hist')">Hall da fama</button>
     </div>
 
     <div id="subtab-ranking-content">
-      <div id="rank-semana-list"><div class="loading"><div class="spinner"></div> Carregando...</div></div>
+      <div id="rank-semana-list">
+        <div class="loading"><div class="spinner"></div> Carregando...</div>
+      </div>
     </div>
     <div id="subtab-hist-content" style="display:none;">
-      <div id="hall-fama-list"><div class="loading"><div class="spinner"></div> Carregando...</div></div>
+      <div id="hall-fama-list">
+        <div class="loading"><div class="spinner"></div> Carregando...</div>
+      </div>
     </div>
   </div>
 
-  <!-- ── Tab Geral ── -->
+
+  <!-- ── Tab: Geral ── -->
   <div class="tab-content hidden" id="tab-geral">
     <div class="section-title">Ranking Geral</div>
     <div class="section-sub">Total acumulado de questões</div>
-    <div id="rank-geral-list"><div class="loading"><div class="spinner"></div> Carregando...</div></div>
+    <div id="rank-geral-list">
+      <div class="loading"><div class="spinner"></div> Carregando...</div>
+    </div>
   </div>
 
-  <!-- ── Tab Perfil ── -->
+
+  <!-- ── Tab: Perfil ── -->
   <div class="tab-content hidden" id="tab-perfil">
     <div class="section-title">Perfil</div>
+
     <div class="profile-header">
       <span class="profile-emoji-big" id="p-emoji">🪱</span>
       <div class="profile-name" id="p-name">—</div>
       <div class="profile-tag" id="p-animal">Minhoca</div>
     </div>
+
     <div class="stats-grid">
       <div class="stat-card"><div class="stat-big" id="p-total">0</div><div class="stat-label">Questões totais</div></div>
       <div class="stat-card"><div class="stat-big" id="p-streak">0</div><div class="stat-label">Streak 🔥</div></div>
@@ -696,600 +213,30 @@ body::before {
     <button class="logout-btn" onclick="sair()">Sair da conta</button>
   </div>
 
+
+  <!-- Barra de navegação inferior -->
   <nav class="bottom-nav">
-    <button class="nav-item active" id="nav-home"   onclick="mudarTab('home')"><span class="nav-icon">✏️</span>Registrar</button>
-    <button class="nav-item"        id="nav-dia"    onclick="mudarTab('dia')"><span class="nav-icon">📅</span>Hoje</button>
+    <button class="nav-item active" id="nav-home"   onclick="mudarTab('home')">  <span class="nav-icon">✏️</span>Registrar</button>
+    <button class="nav-item"        id="nav-dia"    onclick="mudarTab('dia')">   <span class="nav-icon">📅</span>Hoje</button>
     <button class="nav-item"        id="nav-semana" onclick="mudarTab('semana')"><span class="nav-icon">🏅</span>Semanas</button>
-    <button class="nav-item"        id="nav-geral"  onclick="mudarTab('geral')"><span class="nav-icon">🏆</span>Geral</button>
+    <button class="nav-item"        id="nav-geral"  onclick="mudarTab('geral')"> <span class="nav-icon">🏆</span>Geral</button>
     <button class="nav-item"        id="nav-perfil" onclick="mudarTab('perfil')"><span class="nav-icon">👤</span>Perfil</button>
   </nav>
-</div>
 
-<script>
-// ══════════════════════════════════════════════
-//  CONFIG — substitua pela sua URL do Apps Script
-// ══════════════════════════════════════════════
-const API_URL = 'https://script.google.com/macros/s/AKfycbxUnrzCTLn38gVUHyV1o79mYUoeZM7oZqVl_mFPJ1EVfiLaVfFMBBkOL5ZAfqLI1w/exec';
-
-// ══════════════════════════════════════════════
-//  SISTEMA DE EVOLUÇÃO — 25 níveis com thresholds progressivos
-//  Cada tier tem limiar diferente para incentivar estudo contínuo
-// ══════════════════════════════════════════════
-const EVOLUCAO = [
-  // Tier Iniciante (Invertebrados/Pequenos) — Progressão rápida
-  { nome: 'Ovo',        emoji: '🥚', req: 0,      tier: 'Iniciante' },
-  { nome: 'Minhoca',    emoji: '🪱', req: 30,     tier: 'Iniciante' },
-  { nome: 'Formiga',    emoji: '🐜', req: 80,     tier: 'Iniciante' },
-  { nome: 'Lagarta',    emoji: '🐛', req: 150,    tier: 'Iniciante' },
-  { nome: 'Abelha',     emoji: '🐝', req: 250,    tier: 'Iniciante' },
-  { nome: 'Borboleta',  emoji: '🦋', req: 400,    tier: 'Iniciante' },
-  { nome: 'Escaravelho',emoji: '🪲', req: 600,    tier: 'Iniciante' },
-
-  // Tier Anfíbio/Réptil — O despertar
-  { nome: 'Girino',     emoji: '🐸', req: 850,    tier: 'Anfíbio' },
-  { nome: 'Sapo',       emoji: '🐸', req: 1100,   tier: 'Anfíbio' },
-  { nome: 'Tartaruga',  emoji: '🐢', req: 1400,   tier: 'Anfíbio' },
-  { nome: 'Iguana',     emoji: '🦎', req: 1800,   tier: 'Anfíbio' },
-  { nome: 'Cobra',      emoji: '🐍', req: 2300,   tier: 'Anfíbio' },
-  { nome: 'Jacaré',     emoji: '🐊', req: 2900,   tier: 'Anfíbio' },
-
-  // Tier Mamífero — Força e Agilidade
-  { nome: 'Coelho',     emoji: '🐰', req: 3600,   tier: 'Mamífero' },
-  { nome: 'Gato',       emoji: '🐈', req: 4400,   tier: 'Mamífero' },
-  { nome: 'Cão',        emoji: '🐕', req: 5300,   tier: 'Mamífero' },
-  { nome: 'Raposa',     emoji: '🦊', req: 6300,   tier: 'Mamífero' },
-  { nome: 'Lobo',       emoji: '🐺', req: 7500,   tier: 'Mamífero' },
-  { nome: 'Urso',       emoji: '🐻', req: 8800,   tier: 'Mamífero' },
-  { nome: 'Gorila',     emoji: '🦍', req: 10500,  tier: 'Mamífero' },
-
-  // Tier Predador — Domínio Territorial
-  { nome: 'Leopardo',   emoji: '🐆', req: 12500,  tier: 'Predador' },
-  { nome: 'Tigre',      emoji: '🐅', req: 15000,  tier: 'Predador' },
-  { nome: 'Leão',       emoji: '🦁', req: 18000,  tier: 'Predador' },
-  { nome: 'Tubarão',    emoji: '🦈', req: 21500,  tier: 'Predador' },
-  { nome: 'Orca',       emoji: '🐋', req: 25500,  tier: 'Predador' },
-
-  // Tier Élite — Lordes dos Céus e Solo
-  { nome: 'Águia',      emoji: '🦅', req: 30000,  tier: 'Élite' },
-  { nome: 'Falcão',     emoji: '🪁', req: 35000,  tier: 'Élite' },
-  { nome: 'Mamute',     emoji: '🦣', req: 41000,  tier: 'Élite' },
-  { nome: 'Dinossauro', emoji: '🦖', req: 48000,  tier: 'Élite' },
-
-  // Tier Lendário — Além do Humano
-  { nome: 'Unicórnio',  emoji: '🦄', req: 56000,  tier: 'Lendário' },
-  { nome: 'Grifo',      emoji: '🦅', req: 65000,  tier: 'Lendário' },
-  { nome: 'Fênix',      emoji: '🔥', req: 75000,  tier: 'Lendário' },
-  { nome: 'Dragão',     emoji: '🐉', req: 88000,  tier: 'Lendário' },
-  { nome: 'Lenda',      emoji: '⚡', req: 105000, tier: 'Lendário' },
-  { nome: 'Imortal',    emoji: '👑', req: 130000, tier: 'Lendário' },
-];
-
-const TIER_COLORS = {
-  'Iniciante': '#6b7aab',
-  'Anfíbio':   '#2dd4bf',
-  'Mamífero':  '#f59e0b',
-  'Predador':  '#f87171',
-  'Élite':     '#a89af9',
-  'Lendário':  '#f5c842',
-};
-
-// ══ Conquistas ══
-const CONQUISTAS = [
-  // Volume
-  { id: 'primeiro',    icon: '🌱', nome: 'Primeiro Passo', desc: 'Sua 1ª questão registrada', cond: u => (u.total||0) >= 1 },
-  { id: 'k1',          icon: '🥉', nome: 'Iniciado', desc: '1.000 questões acumuladas', cond: u => (u.total||0) >= 1000 },
-  { id: 'k5',          icon: '🥈', nome: 'Comprometido', desc: '5.000 questões acumuladas', cond: u => (u.total||0) >= 5000 },
-  { id: 'k10',         icon: '🥇', nome: 'Mestre', desc: '10.000 questões acumuladas', cond: u => (u.total||0) >= 10000 },
-  
-  // Consistência (Streak)
-  { id: 'streak3',     icon: '🥉', nome: 'Tríade', desc: '3 dias seguidos estudando', cond: u => (u.streak||0) >= 3 },
-  { id: 'streak7',     icon: '🔥', nome: 'Semana de Fogo', desc: '7 dias de ofensiva', cond: u => (u.streak||0) >= 7 },
-  { id: 'streak15',    icon: '💎', nome: 'Hábito Formado', desc: '15 dias de constância', cond: u => (u.streak||0) >= 15 },
-  { id: 'streak30',    icon: '🏛️', nome: 'Inabalável', desc: '30 dias de foco total', cond: u => (u.streak||0) >= 30 },
-
-  // Desempenho Diário (Picos)
-  { id: 'burst50',     icon: '🚀', nome: 'Sprint Diário', desc: 'Fez mais de 50q em um dia', cond: u => (u.maxDia||0) >= 50 },
-  { id: 'burst100',    icon: '☄️', nome: 'Super Nova', desc: 'Fez mais de 100q em um dia', cond: u => (u.maxDia||0) >= 100 },
-  
-  // Tier Up (Marcos de Tier)
-  { id: 'rank_anfibio', icon: '🐢', nome: 'Evolução Biológica', desc: 'Saiu do tier Iniciante', cond: u => (u.total||0) >= 850 },
-  { id: 'rank_mamifero',icon: '🦊', nome: 'Sangue Quente', desc: 'Alcançou o tier Mamífero', cond: u => (u.total||0) >= 3600 },
-];
-
-// ══════════════════════════════════════════════
-//  Estado
-// ══════════════════════════════════════════════
-let user     = JSON.parse(localStorage.getItem('studyrank_user') || 'null');
-let tabAtiva = 'home';
-let subTabAtiva = 'ranking';
-let semanaOffset = 0; // 0 = atual, -1 = anterior, etc.
-let questoesHoje = 0; // carregado da API ou estimado localmente
+</div><!-- /#app -->
 
 
-//  API helpers 
-// ══════════════════════════════════════════════
-async function apiGet(acao, extraParams = {}) {
-  const res = await fetch(API_URL, {
-    method: 'POST',
-    body: JSON.stringify({ acao, ...extraParams }),
-    headers: { 'Content-Type': 'application/json' }, // ✅ corrigido
-    redirect: 'follow'
-  });
+<!-- ════════════════════════════════════════
+     SCRIPTS — ordem importa!
+════════════════════════════════════════ -->
+<script src="js/data.js"></script>      <!-- Constantes: EVOLUCAO, CONQUISTAS, API_URL -->
+<script src="js/api.js"></script>       <!-- Funções de comunicação com a API -->
+<script src="js/ui.js"></script>        <!-- Helpers de renderização (header, progresso, perfil) -->
+<script src="js/auth.js"></script>      <!-- Login e logout -->
+<script src="js/registro.js"></script>  <!-- Registrar questões -->
+<script src="js/ranking.js"></script>   <!-- Rankings do dia e geral -->
+<script src="js/semanas.js"></script>   <!-- Rankings semanais e hall da fama -->
+<script src="js/app.js"></script>       <!-- Navegação entre tabs + inicialização (deve ser o último) -->
 
-  const text = await res.text();
-
-  try {
-    const json = JSON.parse(text);
-
-    if (json.erro) {
-      console.error('Erro da API:', json.erro);
-      throw new Error(json.erro);
-    }
-
-    return json;
-  } catch (e) {
-    console.error('Resposta inválida da API:', text);
-    throw new Error('Erro ao interpretar resposta da API');
-  }
-}
-
-async function apiPost(dados) {
-  const res = await fetch(API_URL, {
-    method: 'POST',
-    body: JSON.stringify(dados),
-    headers: { 'Content-Type': 'application/json' }, // ✅ corrigido
-    redirect: 'follow'
-  });
-
-  const text = await res.text();
-
-  try {
-    const json = JSON.parse(text);
-
-    if (json.erro) {
-      console.error('Erro da API:', json.erro);
-      throw new Error(json.erro);
-    }
-
-    return json;
-  } catch (e) {
-    console.error('Resposta inválida da API:', text);
-    throw new Error('Erro ao interpretar resposta da API');
-  }
-}
-
-// ══════════════════════════════════════════════
-//  Login
-// ══════════════════════════════════════════════
-async function fazerLogin() {
-  const nome = document.getElementById('login-name').value.trim();
-  if (!nome) { erroLogin('Digite seu nome.'); return; }
-  const btn = document.getElementById('login-btn');
-  btn.disabled = true; btn.textContent = 'Entrando...';
-  try {
-    const res = await apiPost({ acao: 'cadastrar', nome });
-    if (res.erro) throw new Error(res.erro);
-    user = res.usuario;
-    localStorage.setItem('studyrank_user', JSON.stringify(user));
-    iniciarApp();
-  } catch(e) {
-    erroLogin('Erro ao conectar. Verifique a URL da API.');
-    btn.disabled = false; btn.textContent = 'Entrar';
-  }
-}
-function erroLogin(msg) {
-  const el = document.getElementById('login-error');
-  el.textContent = msg; el.style.display = 'block';
-}
-document.getElementById('login-name').addEventListener('keydown', e => {
-  if (e.key === 'Enter') fazerLogin();
-});
-
-// ══════════════════════════════════════════════
-//  App init
-// ══════════════════════════════════════════════
-function iniciarApp() {
-  document.getElementById('login-screen').style.display = 'none';
-  document.getElementById('app').classList.add('visible');
-
-  const d = new Date();
-  const dataStr = d.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
-  document.getElementById('data-home').textContent = dataStr;
-  document.getElementById('data-hoje').textContent = dataStr;
-
-  atualizarHeader();
-  atualizarProgresso();
-  atualizarMini();
-}
-
-// ══════════════════════════════════════════════
-//  Header & UI helpers
-// ══════════════════════════════════════════════
-function getNivel(total) {
-  let nivel = 0;
-  for (let i = EVOLUCAO.length - 1; i >= 0; i--) {
-    if (total >= EVOLUCAO[i].req) { nivel = i; break; }
-  }
-  return nivel;
-}
-
-function atualizarHeader() {
-  const total  = user.total  || 0;
-  const nivel  = getNivel(total);
-  const animal = EVOLUCAO[nivel];
-  document.getElementById('h-emoji').textContent  = animal.emoji;
-  document.getElementById('h-name').textContent   = user.nome;
-  document.getElementById('h-animal').textContent = animal.nome;
-  document.getElementById('h-streak-num').textContent = (user.streak || 0) + ' dias';
-  document.getElementById('h-level').textContent  = nivel + 1;
-}
-
-function atualizarProgresso() {
-  const total = user.total || 0;
-  const nivel = getNivel(total);
-  const cur   = EVOLUCAO[nivel];
-  const next  = EVOLUCAO[nivel + 1];
-
-  document.getElementById('prog-animal').textContent = `${cur.nome} ${cur.emoji}`;
-
-  let pct, countText, nextText;
-  if (!next) {
-    pct       = 100;
-    countText = `${total} questões`;
-    nextText  = '🏆 Nível máximo!';
-  } else {
-    const dentro  = total - cur.req;
-    const precisa = next.req - cur.req;
-    pct       = Math.min(100, Math.round(dentro / precisa * 100));
-    countText = `${dentro} / ${precisa} questões neste nível`;
-    nextText  = `→ ${next.nome} ${next.emoji} (faltam ${next.req - total})`;
-  }
-
-  document.getElementById('prog-pct').textContent   = pct + '%';
-  document.getElementById('prog-fill').style.width  = pct + '%';
-  document.getElementById('prog-count').textContent = countText;
-  document.getElementById('prog-next').textContent  = nextText;
-}
-
-function atualizarMini() {
-  const total = user.total || 0;
-  const nivel = getNivel(total);
-  document.getElementById('mini-total').textContent = total;
-  document.getElementById('mini-nivel').textContent = nivel + 1;
-  // Hoje é atualizado via registrar ou quando carregar rank
-  document.getElementById('mini-hoje').textContent  = questoesHoje;
-}
-
-function atualizarPerfil() {
-  const total = user.total || 0;
-  const nivel = getNivel(total);
-  const animal = EVOLUCAO[nivel];
-
-  document.getElementById('p-emoji').textContent  = animal.emoji;
-  document.getElementById('p-name').textContent   = user.nome;
-  document.getElementById('p-animal').textContent = animal.nome;
-  document.getElementById('p-total').textContent  = total;
-  document.getElementById('p-streak').textContent = user.streak || 0;
-  document.getElementById('p-nivel').textContent  = nivel + 1;
-  document.getElementById('p-vitoriassem').textContent = user.vitoriasSemana || 0;
-
-  // Cadeia de evolução
-  let tierAtual = null;
-  let html = '';
-  EVOLUCAO.forEach((ev, i) => {
-    if (ev.tier !== tierAtual) {
-      tierAtual = ev.tier;
-      const cor = TIER_COLORS[ev.tier] || 'var(--muted2)';
-      html += `<div class="evo-tier-header" style="color:${cor}">— ${ev.tier} —</div>`;
-    }
-    const unlocked = total >= ev.req;
-    const atual    = i === nivel;
-    html += `<div class="evo-row ${atual ? 'current' : ''} ${unlocked ? 'unlocked' : 'locked'}">
-      <span class="evo-emoji">${ev.emoji}</span>
-      <span class="evo-name">${ev.nome}</span>
-      <span class="evo-req">${ev.req.toLocaleString()} q.</span>
-      ${atual ? '<span class="evo-current-marker">ATUAL</span>' : unlocked ? '<span class="evo-check">✓</span>' : ''}
-    </div>`;
-  });
-  document.getElementById('evo-chain').innerHTML = html;
-
-  // Conquistas
-  const bHtml = CONQUISTAS.map(c => {
-    const earned = c.cond(user);
-    return `<div class="badge-item ${earned ? 'earned' : 'locked'}">
-      <span class="badge-icon">${c.icon}</span>
-      <div class="badge-name">${c.nome}</div>
-      <div class="badge-desc">${c.desc}</div>
-    </div>`;
-  }).join('');
-  document.getElementById('badges-grid').innerHTML = bHtml;
-}
-
-// ══════════════════════════════════════════════
-//  Registrar
-// ══════════════════════════════════════════════
-function ajustarQuestoes(d) {
-  const inp = document.getElementById('questoes-input');
-  inp.value = Math.max(1, (parseInt(inp.value) || 0) + d);
-}
-function setQ(n) { document.getElementById('questoes-input').value = n; }
-
-async function registrarQuestoes() {
-  const questoes = parseInt(document.getElementById('questoes-input').value) || 0;
-  if (questoes <= 0) { feedback('Coloque ao menos 1 questão.', false); return; }
-  const btn = document.getElementById('reg-btn');
-  btn.disabled = true; btn.textContent = 'Registrando...';
-  try {
-    const res = await apiPost({ acao: 'registrar', userId: user.id, questoes });
-    if (res.erro) throw new Error(res.erro);
-    user.total  = res.total;
-    user.animal = res.animal;
-    user.emoji  = res.emoji;
-    if (res.streak !== undefined) user.streak = res.streak;
-    localStorage.setItem('studyrank_user', JSON.stringify(user));
-    questoesHoje = res.questoesHoje || questoesHoje + questoes;
-    atualizarHeader();
-    atualizarProgresso();
-    atualizarMini();
-    feedback(`+${questoes} questões registradas! Total hoje: ${res.questoesHoje || '?'} 🎉`, true);
-  } catch(e) {
-    feedback('Erro ao registrar. Tente novamente.', false);
-  }
-  btn.disabled = false; btn.textContent = 'Registrar questões';
-}
-
-function feedback(msg, ok) {
-  const el = document.getElementById('reg-feedback');
-  el.textContent = msg;
-  el.className = 'feedback-msg ' + (ok ? 'success' : 'error');
-  el.style.display = 'block';
-  setTimeout(() => { el.style.display = 'none'; }, 5000);
-}
-
-// ══════════════════════════════════════════════
-//  Ranking do Dia
-// ══════════════════════════════════════════════
-async function carregarRankDia() {
-  const gymEl  = document.getElementById('gym-content');
-  const listEl = document.getElementById('rank-dia-list');
-  gymEl.innerHTML  = '<div class="gym-loading"><div class="spinner"></div> Carregando...</div>';
-  listEl.innerHTML = '<div class="loading"><div class="spinner"></div> Carregando...</div>';
-
-  try {
-    const data = await apiGet('rankDia');
-    if (!data.length) {
-      gymEl.innerHTML  = '<div class="gym-empty">Ninguém registrou questões hoje ainda. Seja o primeiro! 💪</div>';
-      listEl.innerHTML = '<div class="empty-state">Nenhum registro de hoje ainda.</div>';
-      return;
-    }
-
-    const lider = data[0];
-    const eu = lider.nome.toLowerCase() === user.nome.toLowerCase();
-    gymEl.innerHTML = `
-      <div class="gym-leader-row">
-        <span class="gym-leader-emoji">${lider.emoji || '🪱'}</span>
-        <div class="gym-leader-info">
-          <div class="gym-leader-name">${lider.nome}${eu ? ' 👑' : ''}</div>
-          <div class="gym-leader-animal">${lider.animal || 'Minhoca'}</div>
-        </div>
-        <div class="gym-leader-count">
-          <div class="gym-count-big">${lider.questoes}</div>
-          <div class="gym-count-label">questões hoje</div>
-        </div>
-      </div>`;
-
-    listEl.innerHTML = '<div class="rank-list">' + data.map((item, i) => {
-      const eu2 = item.nome.toLowerCase() === user.nome.toLowerCase();
-      if (eu2) questoesHoje = item.questoes;
-      return `<div class="rank-item ${i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':''} ${eu2?'rank-me':''}">
-        <span class="rank-pos ${i===0?'p1':i===1?'p2':i===2?'p3':''}">${i+1}</span>
-        <span class="rank-emoji">${item.emoji || '🪱'}</span>
-        <div class="rank-info">
-          <div class="rank-name">${item.nome}${eu2?' (você)':''}</div>
-          <div class="rank-sub">${item.animal || 'Minhoca'}</div>
-        </div>
-        <div class="rank-num">
-          <div class="rank-big">${item.questoes}</div>
-          <div class="rank-unit">hoje</div>
-        </div>
-      </div>`;
-    }).join('') + '</div>';
-    document.getElementById('mini-hoje').textContent = questoesHoje;
-  } catch(e) {
-    gymEl.innerHTML  = '<div class="gym-empty">Erro ao carregar.</div>';
-    listEl.innerHTML = '<div class="empty-state">Erro ao carregar. Verifique a conexão.</div>';
-  }
-}
-
-// ══════════════════════════════════════════════
-//  Ranking Geral
-// ══════════════════════════════════════════════
-async function carregarRankGeral() {
-  const el = document.getElementById('rank-geral-list');
-  el.innerHTML = '<div class="loading"><div class="spinner"></div> Carregando...</div>';
-  try {
-    const data = await apiGet('rankGeral');
-    if (!data.length) { el.innerHTML = '<div class="empty-state">Nenhum dado ainda.</div>'; return; }
-    el.innerHTML = '<div class="rank-list">' + data.map((item, i) => {
-      const eu = item.nome.toLowerCase() === user.nome.toLowerCase();
-      const nivel = getNivel(item.total || 0);
-      const animalData = EVOLUCAO[nivel];
-      return `<div class="rank-item ${i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':''} ${eu?'rank-me':''}">
-        <span class="rank-pos ${i===0?'p1':i===1?'p2':i===2?'p3':''}">${i+1}</span>
-        <span class="rank-emoji">${animalData.emoji}</span>
-        <div class="rank-info">
-          <div class="rank-name">${item.nome}${eu?' (você)':''}</div>
-          <div class="rank-sub">${animalData.nome}${item.streak ? ' · 🔥 '+item.streak+'d' : ''}</div>
-        </div>
-        <div class="rank-num">
-          <div class="rank-big">${(item.total||0).toLocaleString()}</div>
-          <div class="rank-unit">questões</div>
-        </div>
-      </div>`;
-    }).join('') + '</div>';
-  } catch(e) {
-    el.innerHTML = '<div class="empty-state">Erro ao carregar.</div>';
-  }
-}
-
-// ══════════════════════════════════════════════
-//  Semanas — Histórico
-// ══════════════════════════════════════════════
-function getInicioSemana(offset = 0) {
-  const hoje = new Date();
-  const dom  = hoje.getDay(); // 0=dom
-  const ini  = new Date(hoje);
-  ini.setDate(hoje.getDate() - dom + (offset * 7));
-  ini.setHours(0,0,0,0);
-  const fim = new Date(ini);
-  fim.setDate(ini.getDate() + 6);
-  return { ini, fim };
-}
-
-function formatarPeriodo(ini, fim) {
-  const opts = { day: 'numeric', month: 'short' };
-  return `${ini.toLocaleDateString('pt-BR', opts)} – ${fim.toLocaleDateString('pt-BR', opts)}`;
-}
-
-function navegarSemana(dir) {
-  semanaOffset += dir;
-  if (semanaOffset >= 0) semanaOffset = 0;
-  document.getElementById('week-next-btn').disabled = semanaOffset >= 0;
-  carregarSemana();
-}
-
-function subTab(tab) {
-  subTabAtiva = tab;
-  document.getElementById('subtab-ranking').classList.toggle('active', tab === 'ranking');
-  document.getElementById('subtab-hist').classList.toggle('active', tab === 'hist');
-  document.getElementById('subtab-ranking-content').style.display = tab === 'ranking' ? '' : 'none';
-  document.getElementById('subtab-hist-content').style.display    = tab === 'hist' ? '' : 'none';
-}
-
-async function carregarSemana() {
-  const { ini, fim } = getInicioSemana(semanaOffset);
-  const isAtual = semanaOffset === 0;
-  document.getElementById('week-label').textContent    = isAtual ? 'Semana atual' : `Semana ${Math.abs(semanaOffset)} atrás`;
-  document.getElementById('week-sublabel').textContent = formatarPeriodo(ini, fim);
-
-  const winnerEl  = document.getElementById('week-winner-area');
-  const rankEl    = document.getElementById('rank-semana-list');
-  const hallEl    = document.getElementById('hall-fama-list');
-
-  winnerEl.innerHTML = '<div class="loading"><div class="spinner"></div> Carregando...</div>';
-  rankEl.innerHTML   = '<div class="loading"><div class="spinner"></div> Carregando...</div>';
-
-  try {
-    // Para API existente, tenta buscar rank da semana
-    // Adapte o parâmetro conforme sua API (aqui usamos iniSemana como ISO string)
-    const isoIni = ini.toISOString().slice(0,10);
-    const data = await apiGet('rankSemana', { semana: isoIni });
-
-    if (!data || !data.length) {
-      winnerEl.innerHTML = `<div class="week-no-data"><span class="big-icon">📭</span>Sem dados para esta semana ainda.</div>`;
-      rankEl.innerHTML   = '<div class="empty-state">Sem dados disponíveis.</div>';
-    } else {
-      const lider = data[0];
-      const eu = lider.nome.toLowerCase() === user.nome.toLowerCase();
-      const nivel = getNivel(lider.total || 0);
-      const animalLider = EVOLUCAO[nivel];
-      winnerEl.innerHTML = `
-        <div class="week-winner-card">
-          <div class="week-badge">🏆 ${isAtual ? 'Líder da Semana' : 'Vencedor da Semana'}</div>
-          <div class="week-winner-row">
-            <span class="week-winner-emoji">${animalLider.emoji}</span>
-            <div class="week-winner-info">
-              <div class="week-winner-name">${lider.nome}${eu?' 👑':''}</div>
-              <div class="week-winner-sub">${animalLider.nome}</div>
-            </div>
-            <div class="week-winner-count">
-              <div class="week-count-big">${lider.questoes || lider.total || '?'}</div>
-              <div class="week-count-label">questões</div>
-            </div>
-          </div>
-        </div>`;
-
-      rankEl.innerHTML = '<div class="rank-list">' + data.map((item, i) => {
-        const eu2 = item.nome.toLowerCase() === user.nome.toLowerCase();
-        const niv = getNivel(item.total || 0);
-        const an  = EVOLUCAO[niv];
-        const qtd = item.questoes || item.total || 0;
-        return `<div class="rank-item ${i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':''} ${eu2?'rank-me':''}">
-          <span class="rank-pos ${i===0?'p1':i===1?'p2':i===2?'p3':''}">${i+1}</span>
-          <span class="rank-emoji">${an.emoji}</span>
-          <div class="rank-info">
-            <div class="rank-name">${item.nome}${eu2?' (você)':''}</div>
-            <div class="rank-sub">${an.nome}</div>
-          </div>
-          <div class="rank-num">
-            <div class="rank-big">${qtd.toLocaleString()}</div>
-            <div class="rank-unit">esta semana</div>
-          </div>
-        </div>`;
-      }).join('') + '</div>';
-    }
-  } catch(e) {
-    // Fallback: API ainda não tem rankSemana, mostra orientação
-    winnerEl.innerHTML = `<div class="week-no-data"><span class="big-icon">⚙️</span>Adicione a ação <code>rankSemana</code> na sua API para ver dados semanais.</div>`;
-    rankEl.innerHTML   = '<div class="empty-state">Endpoint <code>rankSemana</code> não encontrado na API.<br><br>Adicione no Apps Script e retorne a lista de usuários com questões da semana.</div>';
-  }
-
-  // Hall da fama
-  try {
-    const hallData = await apiGet('hallFama');
-    if (!hallData || !hallData.length) {
-      hallEl.innerHTML = '<div class="empty-state">Nenhum campeão registrado ainda.</div>';
-    } else {
-      hallEl.innerHTML = '<div class="rank-list">' + hallData.map((item, i) => {
-        const niv = getNivel(item.total || 0);
-        const an  = EVOLUCAO[niv];
-        return `<div class="rank-item">
-          <span class="rank-pos">${i+1}</span>
-          <span class="rank-emoji">${an.emoji}</span>
-          <div class="rank-info">
-            <div class="rank-name">${item.nome}</div>
-            <div class="rank-sub">${item.semana || '?'} · ${an.nome}</div>
-          </div>
-          <div class="rank-num">
-            <div class="rank-big">${(item.questoes||0).toLocaleString()}</div>
-            <div class="rank-unit">na semana</div>
-          </div>
-        </div>`;
-      }).join('') + '</div>';
-    }
-  } catch(e) {
-    hallEl.innerHTML = '<div class="empty-state">Adicione o endpoint <code>hallFama</code> na sua API.</div>';
-  }
-}
-
-// ══════════════════════════════════════════════
-//  Navegação
-// ══════════════════════════════════════════════
-const TABS = ['home','dia','semana','geral','perfil'];
-
-function mudarTab(tab) {
-  document.getElementById('tab-' + tabAtiva).classList.add('hidden');
-  document.getElementById('nav-' + tabAtiva).classList.remove('active');
-  tabAtiva = tab;
-  document.getElementById('tab-' + tab).classList.remove('hidden');
-  document.getElementById('nav-' + tab).classList.add('active');
-
-  if (tab === 'dia')    carregarRankDia();
-  if (tab === 'semana') carregarSemana();
-  if (tab === 'geral')  carregarRankGeral();
-  if (tab === 'perfil') atualizarPerfil();
-}
-
-function sair() {
-  if (!confirm('Sair da conta?')) return;
-  localStorage.removeItem('studyrank_user');
-  location.reload();
-}
-
-// ══════════════════════════════════════════════
-//  Init
-// ══════════════════════════════════════════════
-if (user) iniciarApp();
-</script>
 </body>
 </html>
