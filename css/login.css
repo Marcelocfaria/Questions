@@ -1,1 +1,76 @@
+/* ══════════════════════════════════════════════
+   StudyRank — Login
+   ══════════════════════════════════════════════ */
 
+#login-screen {
+  display: flex; flex-direction: column; justify-content: center;
+  align-items: center; min-height: 100vh; padding: 2rem; gap: 2rem;
+  position: relative; z-index: 1;
+}
+.login-bg-glow {
+  position: fixed; top: -20%; left: 50%; transform: translateX(-50%);
+  width: 600px; height: 600px;
+  background: radial-gradient(ellipse, rgba(124,106,247,.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.login-logo { text-align: center; }
+.login-logo .mascot {
+  font-size: 5.5rem; display: block; margin-bottom: 0.75rem;
+  animation: float 3s ease-in-out infinite;
+}
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+.login-logo .title {
+  font-family: 'Bebas Neue', sans-serif; font-size: 4.5rem;
+  letter-spacing: 4px; color: var(--gold); line-height: 1;
+  text-shadow: 0 0 40px rgba(245,200,66,.3);
+}
+.login-logo .sub {
+  font-size: 0.78rem; color: var(--muted2); letter-spacing: 3px;
+  text-transform: uppercase; margin-top: 8px;
+}
+.login-card {
+  width: 100%; background: var(--bg2);
+  border: 1px solid var(--border2); border-radius: var(--radius);
+  padding: 1.75rem; box-shadow: var(--shadow);
+}
+.login-card h2 { font-size: 1rem; font-weight: 600; margin-bottom: 1.4rem; color: var(--text); }
+
+/* ── Form fields ── */
+.field { margin-bottom: 1rem; }
+.field label {
+  display: block; font-size: 0.72rem; color: var(--muted2); margin-bottom: 6px;
+  text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600;
+}
+.field input {
+  width: 100%; padding: 0.85rem 1.1rem;
+  background: var(--bg3); border: 1px solid var(--border2);
+  border-radius: var(--radius-sm); color: var(--text);
+  font-family: 'Syne', sans-serif; font-size: 1rem; outline: none;
+  transition: border-color .2s, box-shadow .2s;
+}
+.field input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(245,200,66,.1); }
+
+/* ── Botões ── */
+.btn {
+  width: 100%; padding: 0.9rem;
+  background: linear-gradient(135deg, var(--gold), #e8a800);
+  color: #080b12; border: none; border-radius: var(--radius-sm);
+  font-family: 'Bebas Neue', sans-serif; font-size: 1.25rem;
+  letter-spacing: 2px; cursor: pointer; transition: opacity .15s, transform .1s;
+  font-weight: 400;
+}
+.btn:hover { opacity: 0.92; }
+.btn:active { transform: scale(0.98); }
+.btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
+.btn-sm {
+  padding: 0.65rem 1rem; font-size: 1rem; width: auto;
+  border-radius: var(--radius-sm);
+}
+
+/* ── Feedback messages ── */
+.feedback-msg {
+  margin-top: 1rem; padding: 0.75rem 1rem; border-radius: var(--radius-sm);
+  font-size: 0.875rem; text-align: center; display: none; line-height: 1.4;
+}
+.feedback-msg.success { background: rgba(52,211,153,.08); border: 1px solid rgba(52,211,153,.25); color: var(--success); }
+.feedback-msg.error   { background: rgba(248,113,113,.08); border: 1px solid rgba(248,113,113,.25); color: var(--danger); }
