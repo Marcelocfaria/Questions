@@ -1,1 +1,289 @@
+/* ══════════════════════════════════════════════
+   StudyRank — Componentes
+   ══════════════════════════════════════════════ */
 
+/* ── Barra de Progresso ── */
+.progress-card {
+  background: linear-gradient(135deg, var(--bg2), var(--bg3));
+  border: 1px solid var(--border2);
+  border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1rem;
+  position: relative; overflow: hidden;
+}
+.progress-card::after {
+  content: '';
+  position: absolute; top: 0; right: 0;
+  width: 120px; height: 120px;
+  background: radial-gradient(circle, rgba(124,106,247,.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.progress-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+.progress-level-info { display: flex; flex-direction: column; }
+.progress-level-label { font-size: 0.7rem; color: var(--muted2); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+.progress-level-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; color: var(--text); letter-spacing: 1px; }
+.progress-pct { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--gold); line-height: 1; }
+.progress-bar {
+  height: 10px; background: var(--bg4); border-radius: 99px;
+  overflow: hidden; margin-bottom: 8px; position: relative;
+}
+.progress-fill {
+  height: 100%; border-radius: 99px;
+  background: linear-gradient(90deg, var(--purple), var(--gold));
+  transition: width .6s cubic-bezier(.34,1.56,.64,1);
+  position: relative;
+}
+.progress-fill::after {
+  content: '';
+  position: absolute; right: 0; top: 50%; transform: translateY(-50%);
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--gold); box-shadow: 0 0 8px var(--gold);
+}
+.progress-meta { display: flex; justify-content: space-between; align-items: center; }
+.progress-count { font-size: 0.8rem; color: var(--muted2); }
+.progress-next { font-size: 0.78rem; color: var(--purple2); font-weight: 600; }
+
+/* ── Card de Registro ── */
+.register-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1rem; }
+.register-card h3 { font-size: 0.72rem; color: var(--muted2); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; margin-bottom: 1rem; }
+.number-input-row { display: flex; gap: 10px; align-items: center; margin-bottom: 1rem; }
+.num-btn {
+  width: 48px; height: 48px; background: var(--bg3);
+  border: 1px solid var(--border2); border-radius: var(--radius-sm);
+  color: var(--text); font-size: 1.5rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: background .1s, border-color .1s;
+}
+.num-btn:active { background: var(--border); border-color: var(--gold); }
+#questoes-input {
+  flex: 1; text-align: center;
+  font-family: 'Bebas Neue', sans-serif; font-size: 2.4rem;
+  letter-spacing: 2px; padding: 0.5rem;
+  background: var(--bg3); border: 1px solid var(--border2);
+  border-radius: var(--radius-sm); color: var(--gold); outline: none;
+  transition: border-color .2s;
+}
+#questoes-input:focus { border-color: var(--gold); }
+.quick-btns { display: flex; gap: 6px; margin-bottom: 1rem; flex-wrap: wrap; }
+.quick-btn {
+  padding: 5px 13px; background: var(--bg3);
+  border: 1px solid var(--border2); border-radius: 20px;
+  color: var(--muted2); font-size: 0.82rem; cursor: pointer;
+  font-family: 'Syne', sans-serif; font-weight: 600;
+  transition: all .15s;
+}
+.quick-btn:hover, .quick-btn:active { border-color: var(--gold); color: var(--gold); background: rgba(245,200,66,.06); }
+
+/* ── Mini Stats (Hoje) ── */
+.today-mini {
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 1rem;
+}
+.today-mini-item {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 0.75rem 0.5rem;
+  text-align: center;
+}
+.today-mini-big { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; color: var(--gold); line-height: 1; }
+.today-mini-label { font-size: 0.65rem; color: var(--muted2); margin-top: 3px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+/* ── Ginásio (Líder do Dia) ── */
+.gym-card {
+  background: linear-gradient(135deg, #150e20 0%, #1a1230 100%);
+  border: 1px solid rgba(255,107,53,.35); border-radius: var(--radius);
+  padding: 1.2rem 1.4rem; margin-bottom: 1rem; position: relative; overflow: hidden;
+}
+.gym-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gym), var(--gold), var(--gym), transparent);
+}
+.gym-card::after {
+  content: '🏟️';
+  position: absolute; right: -10px; bottom: -10px;
+  font-size: 5rem; opacity: 0.05; pointer-events: none;
+}
+.gym-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(255,107,53,.1); border: 1px solid rgba(255,107,53,.25);
+  color: var(--gym2); border-radius: 20px; padding: 3px 10px;
+  font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; margin-bottom: 12px;
+}
+.gym-leader-row { display: flex; align-items: center; gap: 14px; }
+.gym-leader-emoji { font-size: 3.2rem; line-height: 1; filter: drop-shadow(0 0 12px rgba(255,107,53,.4)); }
+.gym-leader-info { flex: 1; min-width: 0; }
+.gym-leader-name {
+  font-family: 'Bebas Neue', sans-serif; font-size: 1.7rem;
+  letter-spacing: 1px; color: var(--text); line-height: 1.1;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.gym-leader-animal { font-size: 0.78rem; color: var(--gym2); margin-top: 2px; font-weight: 600; }
+.gym-leader-count { text-align: right; flex-shrink: 0; }
+.gym-count-big { font-family: 'Bebas Neue', sans-serif; font-size: 2.6rem; color: var(--gym); line-height: 1; }
+.gym-count-label { font-size: 0.68rem; color: var(--muted2); margin-top: 2px; }
+.gym-empty { text-align: center; color: var(--muted2); font-size: 0.85rem; padding: 0.75rem 0; }
+.gym-loading { display: flex; justify-content: center; gap: 8px; align-items: center; color: var(--muted2); font-size: 0.85rem; padding: 0.5rem 0; }
+
+/* ── Lista de Ranking ── */
+.rank-list { display: flex; flex-direction: column; gap: 8px; }
+.rank-item {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 0.85rem 1rem;
+  transition: border-color .15s;
+}
+.rank-item.rank-1 { border-color: rgba(245,200,66,.5); background: rgba(245,200,66,.03); }
+.rank-item.rank-2 { border-color: rgba(148,163,184,.4); }
+.rank-item.rank-3 { border-color: rgba(184,115,51,.4); }
+.rank-item.rank-me { background: rgba(124,106,247,.06); border-color: var(--purple) !important; }
+.rank-pos {
+  font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem;
+  color: var(--muted); min-width: 28px; text-align: center; line-height: 1;
+}
+.rank-pos.p1 { color: var(--gold); text-shadow: 0 0 10px rgba(245,200,66,.5); }
+.rank-pos.p2 { color: #94a3b8; }
+.rank-pos.p3 { color: #b87333; }
+.rank-emoji { font-size: 1.7rem; line-height: 1; flex-shrink: 0; }
+.rank-info { flex: 1; min-width: 0; }
+.rank-name { font-weight: 700; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rank-sub { font-size: 0.72rem; color: var(--muted2); margin-top: 1px; }
+.rank-num { text-align: right; flex-shrink: 0; }
+.rank-big { font-family: 'Bebas Neue', sans-serif; font-size: 1.9rem; color: var(--gold); line-height: 1; }
+.rank-unit { font-size: 0.65rem; color: var(--muted2); }
+
+/* ── Semanas ── */
+.week-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 0.6rem 0.8rem; margin-bottom: 1rem;
+}
+.week-nav-btn {
+  background: none; border: none; color: var(--muted2); cursor: pointer;
+  font-size: 1.1rem; padding: 4px 8px; border-radius: 6px;
+  transition: color .15s; display: flex; align-items: center; justify-content: center;
+}
+.week-nav-btn:hover { color: var(--gold); }
+.week-nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.week-label { font-size: 0.82rem; color: var(--text); font-weight: 600; text-align: center; }
+.week-sublabel { font-size: 0.68rem; color: var(--muted2); text-align: center; }
+
+.week-winner-card {
+  background: linear-gradient(135deg, #0f1a14 0%, #141f1a 100%);
+  border: 1px solid rgba(52,211,153,.3); border-radius: var(--radius);
+  padding: 1.2rem 1.4rem; margin-bottom: 1rem; position: relative; overflow: hidden;
+}
+.week-winner-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--success), transparent);
+}
+.week-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: rgba(52,211,153,.08); border: 1px solid rgba(52,211,153,.2);
+  color: var(--success); border-radius: 20px; padding: 3px 10px;
+  font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; margin-bottom: 10px;
+}
+.week-winner-row { display: flex; align-items: center; gap: 14px; }
+.week-winner-emoji { font-size: 3rem; line-height: 1; }
+.week-winner-info { flex: 1; min-width: 0; }
+.week-winner-name {
+  font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem;
+  letter-spacing: 1px; line-height: 1.1;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.week-winner-sub { font-size: 0.78rem; color: var(--success); margin-top: 2px; font-weight: 600; }
+.week-winner-count { text-align: right; flex-shrink: 0; }
+.week-count-big { font-family: 'Bebas Neue', sans-serif; font-size: 2.4rem; color: var(--success); line-height: 1; }
+.week-count-label { font-size: 0.68rem; color: var(--muted2); }
+
+.week-no-data {
+  text-align: center; padding: 2rem 1rem;
+  color: var(--muted2); font-size: 0.85rem;
+}
+.week-no-data .big-icon { font-size: 2.5rem; display: block; margin-bottom: 0.5rem; }
+
+/* ── Perfil ── */
+.profile-header {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 1.75rem; text-align: center;
+  margin-bottom: 1rem; position: relative; overflow: hidden;
+}
+.profile-header::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 80px;
+  background: linear-gradient(180deg, rgba(124,106,247,.08) 0%, transparent 100%);
+}
+.profile-emoji-big {
+  font-size: 5rem; display: block; margin-bottom: 0.6rem;
+  filter: drop-shadow(0 0 20px rgba(245,200,66,.3));
+}
+.profile-name { font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; letter-spacing: 2px; }
+.profile-tag {
+  display: inline-block; background: rgba(245,200,66,.08);
+  border: 1px solid rgba(245,200,66,.25); color: var(--gold);
+  border-radius: 20px; padding: 4px 16px; font-size: 0.82rem;
+  margin-top: 8px; font-weight: 600;
+}
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 1rem; }
+.stat-card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 1.1rem; text-align: center;
+}
+.stat-big { font-family: 'Bebas Neue', sans-serif; font-size: 2.3rem; color: var(--gold); line-height: 1; }
+.stat-label { font-size: 0.72rem; color: var(--muted2); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+.logout-btn {
+  width: 100%; padding: 0.8rem; background: transparent;
+  border: 1px solid var(--border2); border-radius: var(--radius-sm);
+  color: var(--muted2); font-family: 'Syne', sans-serif; font-size: 0.9rem;
+  cursor: pointer; transition: all .15s; font-weight: 600;
+}
+.logout-btn:hover { color: var(--danger); border-color: var(--danger); }
+
+/* ── Cadeia de Evolução ── */
+.evolution-card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1rem;
+  overflow: hidden;
+}
+.evolution-card h3 {
+  font-size: 0.72rem; color: var(--muted2); text-transform: uppercase;
+  letter-spacing: 1.5px; font-weight: 600; margin-bottom: 1rem;
+}
+.evo-tiers { display: flex; flex-direction: column; gap: 0; }
+.evo-tier-header {
+  font-size: 0.65rem; color: var(--muted); text-transform: uppercase;
+  letter-spacing: 1px; font-weight: 700; padding: 0.4rem 0 0.3rem;
+  margin-top: 0.5rem; border-top: 1px solid var(--border);
+}
+.evo-tier-header:first-child { border-top: none; margin-top: 0; }
+.evo-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 0.5rem 0.4rem; border-radius: 8px;
+  transition: background .15s;
+}
+.evo-row.current { background: rgba(245,200,66,.06); }
+.evo-row.unlocked { opacity: 1; }
+.evo-row.locked { opacity: 0.4; }
+.evo-emoji { font-size: 1.25rem; min-width: 30px; text-align: center; }
+.evo-name { font-size: 0.88rem; flex: 1; font-weight: 500; }
+.evo-row.current .evo-name { color: var(--gold); font-weight: 700; }
+.evo-req { font-size: 0.72rem; color: var(--muted2); }
+.evo-check { font-size: 0.85rem; color: var(--success); }
+.evo-current-marker {
+  font-size: 0.65rem; color: var(--gold); font-weight: 700;
+  background: rgba(245,200,66,.12); border: 1px solid rgba(245,200,66,.25);
+  border-radius: 10px; padding: 1px 7px; white-space: nowrap;
+}
+
+/* ── Conquistas ── */
+.badges-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 1rem; }
+.badge-item {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 0.85rem 0.5rem;
+  text-align: center; position: relative; overflow: hidden;
+}
+.badge-item.earned { border-color: rgba(245,200,66,.3); background: rgba(245,200,66,.04); }
+.badge-item.locked { opacity: 0.4; filter: grayscale(1); }
+.badge-icon { font-size: 1.6rem; display: block; margin-bottom: 4px; }
+.badge-name { font-size: 0.68rem; color: var(--text); font-weight: 600; line-height: 1.2; }
+.badge-desc { font-size: 0.62rem; color: var(--muted2); margin-top: 2px; }
