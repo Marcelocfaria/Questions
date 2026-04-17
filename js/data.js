@@ -3,7 +3,7 @@
    ══════════════════════════════════════════════ */
 
 // URL do Google Apps Script — substitua pela sua
-const API_URL = 'https://script.google.com/macros/s/AKfycbze9tA4iaQl2dBHlD8w6GGhbKopdiDCXCunJbhGu8vxw1tmd-wCvWlc-N4TJZZ6-w/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbwRzYT_BGjI2UqT1AZmGbYphlpFu3fdr9bCUmGqe0WNm3YISTQxNdNo3kERNR-mVMg/exec';
 
 // ──────────────────────────────────────────────
 // Cadeia de Evolução — 25 níveis com thresholds progressivos
