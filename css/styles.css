@@ -1,1 +1,91 @@
+/* ══════════════════════════════════════════════
+   StudyRank — Estilos Globais
+   ══════════════════════════════════════════════ */
 
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:     #080b12;
+  --bg2:    #0e1220;
+  --bg3:    #151929;
+  --bg4:    #1c2135;
+  --border: #1e2540;
+  --border2:#2a3158;
+  --gold:   #f5c842;
+  --gold2:  #fde68a;
+  --gold3:  #92600a;
+  --purple: #7c6af7;
+  --purple2:#a89af9;
+  --blue:   #3b82f6;
+  --teal:   #2dd4bf;
+  --text:   #e2e8f0;
+  --muted:  #4a5578;
+  --muted2: #6b7aab;
+  --success:#34d399;
+  --danger: #f87171;
+  --warn:   #fb923c;
+  --gym:    #ff6b35;
+  --gym2:   #ff8c5a;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --shadow: 0 4px 24px rgba(0,0,0,.5);
+  --nav-h: 64px;
+}
+
+html { height: 100%; }
+body {
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  display: flex;
+  flex-direction: column;
+  max-width: 480px;
+  margin: 0 auto;
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ── Noise texture overlay ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0; opacity: 0.4;
+}
+
+/* ── Misc / Utilitários ── */
+.empty-state { text-align: center; color: var(--muted2); padding: 3rem 1rem; font-size: 0.88rem; }
+.loading { display: flex; justify-content: center; align-items: center; padding: 2rem; gap: 8px; color: var(--muted2); font-size: 0.9rem; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.spinner { width: 16px; height: 16px; border: 2px solid var(--border2); border-top-color: var(--gold); border-radius: 50%; animation: spin .7s linear infinite; flex-shrink: 0; }
+.divider { height: 1px; background: var(--border); margin: 0.75rem 0; }
+
+/* ── Seções ── */
+.section-title {
+  font-family: 'Bebas Neue', sans-serif; font-size: 1.7rem;
+  letter-spacing: 2px; color: var(--gold); margin-bottom: 0.25rem;
+}
+.section-sub { font-size: 0.78rem; color: var(--muted2); margin-bottom: 1.1rem; }
+
+/* ── Cards base ── */
+.card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 1.25rem;
+  margin-bottom: 1rem;
+}
+.card-sm { padding: 1rem; border-radius: var(--radius-sm); margin-bottom: 0.75rem; }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 99px; }
+
+/* ── Responsive ── */
+@media (max-width: 360px) {
+  .login-logo .title { font-size: 3.5rem; }
+  .gym-count-big { font-size: 2rem; }
+  .badges-grid { grid-template-columns: repeat(3, 1fr); }
+}
