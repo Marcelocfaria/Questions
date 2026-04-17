@@ -18,6 +18,7 @@ async function fazerLogin() {
     localStorage.setItem('studyrank_user', JSON.stringify(user));
     iniciarApp();
   } catch (e) {
+    console.error('Erro detalhado:', e);
     erroLogin('Erro ao conectar. Verifique a URL da API.');
     btn.disabled = false;
     btn.textContent = 'Entrar';
