@@ -709,7 +709,7 @@ body::before {
 // ══════════════════════════════════════════════
 //  CONFIG — substitua pela sua URL do Apps Script
 // ══════════════════════════════════════════════
-const API_URL = 'https://script.google.com/macros/s/AKfycbwFn17XuF1qSPylbFZPR5VJV0WqcUa_0kRkIqXhTE-KLzSPnr5BuhPTljxGWLdPPts/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbxWU37n_xppxcxAr3iYvgAJPOYxgN6P4WZBR-c-_qRvXUyeQqPPAQo6YoNGpcJPJ6o/exec';
 
 // ══════════════════════════════════════════════
 //  SISTEMA DE EVOLUÇÃO — 25 níveis com thresholds progressivos
@@ -808,9 +808,16 @@ let questoesHoje = 0; // carregado da API ou estimado localmente
 // ══════════════════════════════════════════════
 //  API helpers
 // ══════════════════════════════════════════════
-async function apiGet(acao, params = '') {
-  const res = await fetch(`${API_URL}?acao=${acao}${params}`);
-  return res.json();
+async function apiGet(acao, extraParams = {}) {
+  const res = await fetch(API_URL, {
+    method: 'POST',
+    body: JSON.stringify({ acao, ...extraParams }),
+    headers: { 'Content-Type': 'text/plain' },
+    redirect: 'follow'
+  });
+  const text = await res.text();
+  try { return JSON.parse(text); }
+  catch { return []; }
 }
 async function apiPost(dados) {
   const res = await fetch(API_URL, {
@@ -1147,7 +1154,7 @@ async function carregarSemana() {
     // Para API existente, tenta buscar rank da semana
     // Adapte o parâmetro conforme sua API (aqui usamos iniSemana como ISO string)
     const isoIni = ini.toISOString().slice(0,10);
-    const data = await apiGet('rankSemana', `&semana=${isoIni}`);
+    const data = await apiGet('rankSemana', { semana: isoIni });
 
     if (!data || !data.length) {
       winnerEl.innerHTML = `<div class="week-no-data"><span class="big-icon">📭</span>Sem dados para esta semana ainda.</div>`;
